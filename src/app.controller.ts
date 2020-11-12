@@ -12,4 +12,9 @@ export class AppController {
 	getHello(): string {
 		return this.appService.getHello()
 	}
+
+	@Get('weather')
+	async weather() {
+		return await this.appService.weather()
+	}
 }
