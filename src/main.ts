@@ -9,8 +9,8 @@ import { AppModule } from '@/app.module'
 //swagger文档
 async function createSwagger(app) {
 	const options = new DocumentBuilder()
-		.setTitle('后台管理系统')
-		.setDescription('后台管理系统Api')
+		.setTitle('农贸生鲜系统')
+		.setDescription('农贸生鲜系统Api文档')
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, options)
