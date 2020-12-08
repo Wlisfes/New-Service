@@ -11,6 +11,9 @@ import { OssModule } from '@/common/oss/oss.module'
 //表结构
 import { UserEntity } from '@/entity/user.entity'
 
+//多端主模块入口
+import { AppMainModule } from '@/app-module/main/main.module'
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true }),
@@ -44,7 +47,8 @@ import { UserEntity } from '@/entity/user.entity'
 			domain: process.env.DOMAIN // 自定义域名
 		}),
 		TypeOrmModule.forFeature([UserEntity]),
-		HttpModule
+		HttpModule,
+		AppMainModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
