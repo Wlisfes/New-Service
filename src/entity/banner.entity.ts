@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { AdminEntity } from '@/entity/admin.entity'
 
 @Entity('banner')
 export class BannerEntity {
@@ -26,4 +27,10 @@ export class BannerEntity {
 		nullable: false
 	})
 	createTime: string
+
+	@ManyToOne(
+		type => AdminEntity,
+		admin => admin.banner
+	)
+	admin: AdminEntity
 }
