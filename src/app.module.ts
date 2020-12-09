@@ -13,6 +13,7 @@ import { UserEntity } from '@/entity/user.entity'
 
 //多端主模块入口
 import { AppMainModule } from '@/app-module/main/main.module'
+import { WebMainModule } from '@/web-module/main/main.module'
 
 @Module({
 	imports: [
@@ -48,7 +49,8 @@ import { AppMainModule } from '@/app-module/main/main.module'
 		}),
 		TypeOrmModule.forFeature([UserEntity]),
 		HttpModule,
-		AppMainModule
+		AppMainModule,
+		WebMainModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
