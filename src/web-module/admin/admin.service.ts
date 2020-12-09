@@ -64,7 +64,12 @@ export class AdminService {
 	}
 
 	//获取管理员信息
-	private async findOne(params: { where?: { uid?: number; mobile?: string | number }; relations?: string[] }) {
+	public async adminOne(uid: number) {
+		return await this.findOne({ where: { uid } })
+	}
+
+	//查询管理员
+	public async findOne(params: { where?: { uid?: number; mobile?: string | number }; relations?: string[] }) {
 		try {
 			return await this.adminModel.findOne({
 				where: params.where,

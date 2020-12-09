@@ -7,15 +7,15 @@ export class WebGuard implements CanActivate {
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest()
-		const admin = this.reflector.get<boolean>('admin', context.getHandler())
+		const token = this.reflector.get<boolean>('token', context.getHandler())
 
 		//ipv4挂载
 		request.ipv4 = request.headers['x-forwarded-for'] || request.headers['x-real-ip'] || '127.0.0.1'
 
 		//验证是否登录
-		if (admin) {
-			const token = request.headers['access-token'] //读取headers中的access-token
-			if (!token) {
+		if (token) {
+			const accesstoken = request.headers['access-token'] //读取headers中的access-token
+			if (!accesstoken) {
 				throw new HttpException('未登陆', HttpStatus.UNAUTHORIZED)
 			}
 		}
@@ -25,4 +25,4 @@ export class WebGuard implements CanActivate {
 }
 
 //管理员登录守卫  使用AuthUser守卫的接口会验证管理员登录
-export const AuthAdmin = (admin: boolean) => SetMetadata('admin', admin)
+export const AuthToken = (token: boolean) => SetMetadata('token', token)

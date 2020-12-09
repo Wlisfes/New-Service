@@ -14,6 +14,19 @@ export class BannerEntity {
 	picUrl: string
 
 	@Column({
+		comment: '说明',
+		default: '',
+		nullable: false
+	})
+	comment: string
+
+	@Column({
+		comment: '商品id',
+		nullable: false
+	})
+	proid: number
+
+	@Column({
 		comment: '状态',
 		default: () => 1,
 		nullable: false
