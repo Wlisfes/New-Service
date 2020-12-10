@@ -8,9 +8,10 @@ import { WebGuard } from '@/guard/web.guard'
 import { AdminModule } from '@/web-module/admin/admin.module'
 import { UserModule } from '@/web-module/user/user.module'
 import { BannerModule } from '@/web-module/banner/banner.module'
+import { SourceModule } from '@/web-module/source/source.module'
 
 @Module({
-	imports: [AdminModule, UserModule, BannerModule],
+	imports: [AdminModule, UserModule, BannerModule, SourceModule],
 	providers: [
 		{
 			provide: APP_GUARD,
