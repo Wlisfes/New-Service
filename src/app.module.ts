@@ -3,48 +3,26 @@ import { AppController } from '@/app.controller'
 import { AppService } from '@/app.service'
 
 //全局依赖模块
-import { ConfigModule } from '@nestjs/config'
-import { SessionModule } from 'nestjs-session'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { OssModule } from '@/common/oss/oss.module'
+import { CommonMainModule } from '@/common/main/main.module'
+
+//多端主模块入口
+import { AppMainModule } from '@/app-module/main/main.module'
+import { WebMainModule } from '@/web-module/main/main.module'
 
 //表结构
+import { AdminEntity } from '@/entity/admin.entity'
 import { UserEntity } from '@/entity/user.entity'
+import { SourceEntity } from '@/entity/source.entity'
+import { BannerEntity } from '@/entity/banner.entity'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({ isGlobal: true }),
-		TypeOrmModule.forRoot(),
-		SessionModule.forRootAsync({
-			useFactory() {
-				return {
-					session: {
-						secret: process.env.SESSIONSECRET,
-						resave: true,
-						saveUninitialized: true,
-						cookie: {
-							httpOnly: true,
-							maxAge: 1800 * 1000 //1800秒
-						}
-					}
-				}
-			}
-		}),
-		OssModule.forRoot({
-			client: {
-				endpoint: process.env.ENDPOINT, // endpoint域名
-				accessKeyId: process.env.ACCESSKEYID, // 账号
-				accessKeySecret: process.env.ACCESSKEYSECRET, // 密码
-				bucket: process.env.BUCKET, // 存储桶
-				internal: false,
-				secure: true,
-				cname: false,
-				timeout: process.env.TIMEOUT
-			},
-			domain: process.env.DOMAIN // 自定义域名
-		}),
-		TypeOrmModule.forFeature([UserEntity]),
-		HttpModule
+		CommonMainModule,
+		TypeOrmModule.forFeature([AdminEntity, UserEntity, SourceEntity, BannerEntity]),
+		HttpModule,
+		AppMainModule,
+		WebMainModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
