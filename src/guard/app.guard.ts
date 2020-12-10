@@ -2,7 +2,7 @@ import { Injectable, CanActivate, SetMetadata, ExecutionContext, HttpException, 
 import { Reflector } from '@nestjs/core'
 
 @Injectable()
-export class WebGuard implements CanActivate {
+export class AppGuard implements CanActivate {
 	constructor(private readonly reflector: Reflector) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -14,8 +14,8 @@ export class WebGuard implements CanActivate {
 
 		//验证是否登录
 		if (token) {
-			const webtoken = request.headers['web-token'] //读取headers中的web-token
-			if (!webtoken) {
+			const apptoken = request.headers['app-token'] //读取headers中的app-token
+			if (!apptoken) {
 				throw new HttpException('未登陆', HttpStatus.UNAUTHORIZED)
 			}
 		}
