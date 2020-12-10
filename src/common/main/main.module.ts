@@ -4,6 +4,7 @@ import { SessionModule } from 'nestjs-session'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { OssModule } from '@/common/oss/oss.module'
 import { UtilsModule } from '@/common/utils/utils.module'
+import { AuthModule } from '@/common/auth/auth.module'
 
 @Global()
 @Module({
@@ -38,8 +39,9 @@ import { UtilsModule } from '@/common/utils/utils.module'
 			},
 			domain: process.env.DOMAIN // 自定义域名
 		}),
+		AuthModule,
 		UtilsModule
 	],
-	exports: [UtilsModule]
+	exports: [UtilsModule, AuthModule]
 })
 export class CommonMainModule {}

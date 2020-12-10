@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { compareSync } from 'bcryptjs'
 import { UtilsService } from '@/common/utils/utils.service'
+import { AuthService } from '@/common/auth/auth.service'
 import { AdminEntity } from '@/entity/admin.entity'
 import * as svgCaptcha from 'svg-captcha'
 import * as Face from '@/web-module/admin/admin.dto'
@@ -10,6 +11,7 @@ import * as Face from '@/web-module/admin/admin.dto'
 @Injectable()
 export class AdminService {
 	constructor(
+		private readonly authService: AuthService,
 		private readonly utilsService: UtilsService,
 		@InjectRepository(AdminEntity) private readonly adminModel: Repository<AdminEntity>
 	) {}
@@ -30,7 +32,10 @@ export class AdminService {
 	//手机号登录
 	public async loginMobile(params: Face.LoginMobileDto) {
 		try {
-			const admin = await this.adminModel.findOne({ where: { mobile: params.mobile } })
+			const admin = await this.adminModel.findOne({
+				where: { mobile: params.mobile },
+				select: ['uid', 'password', 'status']
+			})
 			if (admin) {
 				if (admin.status !== 1) {
 					throw new HttpException('账户已被禁用', HttpStatus.BAD_REQUEST)
@@ -38,6 +43,13 @@ export class AdminService {
 				if (!compareSync(params.password, admin.password)) {
 					throw new HttpException('password 错误', HttpStatus.BAD_REQUEST)
 				}
+
+				const token = await this.authService.sign({
+					uid: admin.uid,
+					password: admin.password
+				})
+				const T = await this.findOne({ where: { uid: admin.uid } })
+				return { ...T, token }
 			}
 			throw new HttpException('mobile 错误', HttpStatus.BAD_REQUEST)
 		} catch (error) {

@@ -1,10 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { AdminEntity } from '@/entity/admin.entity'
 
-@Entity('banner')
-export class BannerEntity {
+@Entity('source')
+export class SourceEntity {
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
+
+	@Column({ comment: '类型名称', nullable: false })
+	name: string
 
 	@Column({ comment: '图片', nullable: false })
 	picUrl: string
@@ -12,10 +15,7 @@ export class BannerEntity {
 	@Column({ comment: '说明', nullable: false })
 	comment: string
 
-	@Column({ comment: '商品id', nullable: false })
-	proid: number
-
-	@Column({ comment: '状态', nullable: false, default: () => 1 })
+	@Column({ comment: '状态', nullable: false, default: 1 })
 	status: number
 
 	@Column({
@@ -28,7 +28,7 @@ export class BannerEntity {
 
 	@ManyToOne(
 		type => AdminEntity,
-		admin => admin.banner
+		admin => admin.source
 	)
 	admin: AdminEntity
 }

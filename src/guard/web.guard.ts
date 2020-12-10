@@ -1,9 +1,10 @@
 import { Injectable, CanActivate, SetMetadata, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { AuthService } from '@/common/auth/auth.service'
 
 @Injectable()
 export class WebGuard implements CanActivate {
-	constructor(private readonly reflector: Reflector) {}
+	constructor(private readonly reflector: Reflector, private readonly authService: AuthService) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest()
@@ -17,6 +18,11 @@ export class WebGuard implements CanActivate {
 			const webtoken = request.headers['web-token'] //读取headers中的web-token
 			if (!webtoken) {
 				throw new HttpException('未登陆', HttpStatus.UNAUTHORIZED)
+			}
+
+			const admin = await this.authService.verify(webtoken) //解密token
+			if (admin) {
+				request.admin = admin
 			}
 		}
 

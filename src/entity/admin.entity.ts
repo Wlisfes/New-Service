@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, OneToMany } from 'typeorm'
 import { hashSync } from 'bcryptjs'
 import { BannerEntity } from '@/entity/banner.entity'
+import { SourceEntity } from '@/entity/source.entity'
 
 @Entity('admin')
 export class AdminEntity {
@@ -75,4 +76,11 @@ export class AdminEntity {
 		{ cascade: true }
 	)
 	banner: BannerEntity[]
+
+	@OneToMany(
+		type => SourceEntity,
+		article => article.admin,
+		{ cascade: true }
+	)
+	source: SourceEntity[]
 }

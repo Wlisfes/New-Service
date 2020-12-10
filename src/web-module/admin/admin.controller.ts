@@ -1,11 +1,11 @@
-import { Controller, Post, Get, Body, Query } from '@nestjs/common'
+import { Controller, Post, Get, Body, Query, Req } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiHeader } from '@nestjs/swagger'
 import { AdminService } from '@/web-module/admin/admin.service'
 import { AuthToken } from '@/guard/web.guard'
 import * as Face from '@/web-module/admin/admin.dto'
 
-@Controller(`admin`)
 @ApiTags('管理员模块')
+@Controller(`admin`)
 export class AdminController {
 	constructor(private readonly adminService: AdminService) {}
 
@@ -15,17 +15,23 @@ export class AdminController {
 		return await this.adminService.createAdmin(body)
 	}
 
+	@ApiOperation({ summary: '手机号登录' })
+	@Post('login/mobile')
+	async loginMobile(@Body() body: Face.LoginMobileDto) {
+		return await this.adminService.loginMobile(body)
+	}
+
 	@ApiOperation({ summary: '获取管理员信息' })
-	@ApiHeader({ name: 'access-token', required: true })
+	@ApiHeader({ name: 'web-token', required: true })
 	@Get('one')
 	@AuthToken(true)
-	async adminOne() {
-		return await this.adminService.adminOne(1607526369477)
+	async adminOne(@Req() req: { ipv4: string; admin: { uid: number } }) {
+		return await this.adminService.adminOne(req.admin.uid)
 	}
 
 	@ApiOperation({ summary: '根据uid获取管理员信息' })
-	@ApiHeader({ name: 'access-token', required: true })
-	@Get('uid')
+	@ApiHeader({ name: 'web-token', required: true })
+	@Get('one/uid')
 	@AuthToken(true)
 	async adminOneUid(@Query('uid') uid: number) {
 		return await this.adminService.adminOne(uid)

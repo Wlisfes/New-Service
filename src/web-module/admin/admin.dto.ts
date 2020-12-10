@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsPhoneNumber } from 'class-validator'
 
 export class Admin {
-	@ApiProperty({ description: '手机号', example: '18888888888' })
+	@ApiProperty({ description: '手机号', example: '18676361342' })
 	@IsNotEmpty({ message: 'mobile 必填' })
 	@IsPhoneNumber('CN', { message: '手机号格式错误' })
 	mobile: string
@@ -17,7 +17,7 @@ export class Admin {
 }
 
 export class LoginMobileDto {
-	@ApiProperty({ description: '手机号', example: '18888888888' })
+	@ApiProperty({ description: '手机号', example: '18676361342' })
 	@IsNotEmpty({ message: 'mobile 必填' })
 	@IsPhoneNumber('CN', { message: '手机号格式错误' })
 	mobile: string
