@@ -10,24 +10,20 @@ export class UserEntity {
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
 
-	@Column({
-		type: 'double',
-		comment: 'uid',
-		readonly: true
-	})
+	@Column({ type: 'double', comment: 'uid', readonly: true })
 	uid: number
 
-	@Column({
-		comment: 'openid',
-		readonly: true
-	})
+	@Column({ comment: 'openid', readonly: true })
 	openid: string
 
-	@Column({
-		comment: '昵称',
-		nullable: false
-	})
+	@Column({ comment: '昵称', nullable: false })
 	nickname: string
+
+	@Column({ comment: '头像', nullable: true })
+	avatar: string
+
+	@Column({ comment: '状态', nullable: false, default: 1 })
+	status: number
 
 	@Column({
 		comment: '手机号',
@@ -39,19 +35,6 @@ export class UserEntity {
 		}
 	})
 	mobile: string
-
-	@Column({
-		comment: '头像',
-		nullable: true
-	})
-	avatar: string | null
-
-	@Column({
-		comment: '状态',
-		default: () => 1,
-		nullable: false
-	})
-	status: number
 
 	@Column({
 		type: 'timestamp',

@@ -12,6 +12,7 @@ async function createSwagger(app) {
 		.setTitle('农贸生鲜系统')
 		.setDescription('农贸生鲜系统Api文档')
 		.setVersion('1.0')
+		.addBearerAuth({ in: 'header', type: 'http' }, 'web-token')
 		.build()
 	const document = SwaggerModule.createDocument(app, options)
 	SwaggerModule.setup('api-docs', app, document)

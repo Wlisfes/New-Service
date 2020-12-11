@@ -13,7 +13,7 @@ export class AdminService {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly utilsService: UtilsService,
-		@InjectRepository(AdminEntity) private readonly adminModel: Repository<AdminEntity>
+		@InjectRepository(AdminEntity) public readonly adminModel: Repository<AdminEntity>
 	) {}
 
 	//验证码
