@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core'
 import { AuthService } from '@/common/auth/auth.service'
 import { RedisService } from '@/common/redis/redis.service'
 import { AdminService } from '@/web-module/admin/admin.service'
+import { ADMINKEY } from '@/interface/const.interface'
 
 @Injectable()
 export class WebGuard implements CanActivate {
@@ -22,13 +23,13 @@ export class WebGuard implements CanActivate {
 
 		//验证是否登录
 		if (auth) {
-			const Authorization: string = request.headers['authorization']
-			if (!Authorization) {
+			const WebToken: string = request.headers['web-token']
+			if (!WebToken) {
 				throw new HttpException('未登陆', HttpStatus.UNAUTHORIZED)
 			}
 
-			const ify = await this.authService.verify(Authorization.replace(/Bearer /g, ''))
-			const key = `admin_uid_${ify.uid}`
+			const ify = await this.authService.verify(WebToken)
+			const key = ADMINKEY(ify.uid)
 			const store = await this.redisService.getStore(key)
 			if (store) {
 				request.admin = store
