@@ -29,6 +29,9 @@ export class ProductEntity {
 	@Column({ default: 0, comment: '原价' })
 	suprice: number
 
+	@Column({ comment: '规则状态', nullable: false, default: 1 })
+	status: number
+
 	@ManyToOne(
 		type => AdminEntity,
 		admin => admin.product

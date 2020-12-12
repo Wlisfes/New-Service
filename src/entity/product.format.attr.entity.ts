@@ -6,6 +6,9 @@ export class ProductFormatAttrEntity {
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
 
+	@Column({ comment: '规则值id', nullable: false })
+	attrId: number
+
 	@Column({ comment: '规则值', nullable: false })
 	name: string
 
@@ -22,7 +25,7 @@ export class ProductFormatAttrEntity {
 
 	@ManyToOne(
 		type => ProductFormatEntity,
-		admin => admin.attr
+		productFormat => productFormat.attr
 	)
 	format: ProductFormatEntity
 }

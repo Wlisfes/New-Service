@@ -8,7 +8,10 @@ export class ProductFormatEntity {
 	id: number
 
 	@Column({ comment: '规则值id', nullable: false })
-	format_id: string
+	formatId: number
+
+	@Column({ comment: '规则值', nullable: false })
+	name: string
 
 	@ManyToOne(
 		type => ProductEntity,

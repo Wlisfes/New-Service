@@ -10,9 +10,10 @@ import { UserModule } from '@/web-module/user/user.module'
 import { BannerModule } from '@/web-module/banner/banner.module'
 import { SourceModule } from '@/web-module/source/source.module'
 import { FormatModule } from '@/web-module/format/format.module'
+import { ProductModule } from '@/web-module/product/product.module'
 
 @Module({
-	imports: [AdminModule, UserModule, BannerModule, SourceModule, FormatModule],
+	imports: [AdminModule, UserModule, BannerModule, SourceModule, FormatModule, ProductModule],
 	providers: [
 		{
 			provide: APP_GUARD,
