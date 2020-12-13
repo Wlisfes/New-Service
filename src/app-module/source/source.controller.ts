@@ -10,7 +10,7 @@ export class SourceController {
 
 	@ApiOperation({ summary: '获取分类列表' })
 	@Get('list')
-	async bannerList() {
+	async sourceList() {
 		return await this.sourceService.sourceList()
 	}
 }

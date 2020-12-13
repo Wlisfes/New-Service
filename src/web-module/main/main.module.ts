@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { WebGuard } from '@/guard/web.guard'
 
 //模块
+import { OssModule } from '@/common/oss/oss.module'
 import { AdminModule } from '@/web-module/admin/admin.module'
 import { UserModule } from '@/web-module/user/user.module'
 import { BannerModule } from '@/web-module/banner/banner.module'
@@ -32,7 +33,16 @@ export async function webSwagger(app) {
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, options, {
-		include: [AdminModule, UserModule, BannerModule, SourceModule, FormatModule, ProductModule, HotwellModule]
+		include: [
+			OssModule,
+			AdminModule,
+			UserModule,
+			BannerModule,
+			SourceModule,
+			FormatModule,
+			ProductModule,
+			HotwellModule
+		]
 	})
 	SwaggerModule.setup('api-web', app, document)
 	return this

@@ -15,6 +15,14 @@ export class HotwellEntity {
 	@Column({ comment: '热销结束时间 YYYY-MM-DD HH:mm:ss', nullable: false })
 	endTime: string
 
+	@Column({
+		type: 'timestamp',
+		comment: '创建时间',
+		default: () => 'CURRENT_TIMESTAMP',
+		nullable: false
+	})
+	createTime: string
+
 	@OneToOne(
 		type => ProductEntity,
 		product => product.hotwell

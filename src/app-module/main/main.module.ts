@@ -8,9 +8,10 @@ import { AppGuard } from '@/guard/app.guard'
 import { UserModule } from '@/app-module/user/user.module'
 import { BannerModule } from '@/app-module/banner/banner.module'
 import { SourceModule } from '@/app-module/source/source.module'
+import { HotwellModule } from '@/app-module/hotwell/hotwell.module'
 
 @Module({
-	imports: [UserModule, BannerModule, SourceModule],
+	imports: [UserModule, BannerModule, SourceModule, HotwellModule],
 	providers: [
 		{
 			provide: APP_GUARD,
@@ -27,7 +28,7 @@ export async function appSwagger(app) {
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, options, {
-		include: [UserModule, BannerModule, SourceModule]
+		include: [UserModule, BannerModule, SourceModule, HotwellModule]
 	})
 	SwaggerModule.setup('api-app', app, document)
 	return this
