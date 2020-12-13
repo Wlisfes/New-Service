@@ -10,7 +10,10 @@ export class HotwellService {
 	//热销列表
 	async hotwellList() {
 		try {
-			return await this.hotwellModel.find({ where: { status: 1 } })
+			return await this.hotwellModel.find({
+				where: { status: 1 },
+				relations: ['product']
+			})
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

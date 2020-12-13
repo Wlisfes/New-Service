@@ -26,6 +26,7 @@ export class ProductService {
 	async createProduct(params: Dto.CreateProduct, uid: number) {
 		try {
 			const product = await this.productModel.create({
+				picUrl: params.picUrl,
 				banner: params.banner,
 				content: params.content,
 				title: params.title,

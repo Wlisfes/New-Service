@@ -10,6 +10,9 @@ export class ProductEntity {
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
 
+	@Column({ comment: '封面图', nullable: false })
+	picUrl: string
+
 	@Column({ type: 'simple-array', nullable: false, comment: 'banner图片' })
 	banner: string[]
 

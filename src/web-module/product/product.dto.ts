@@ -45,6 +45,10 @@ export class ProductSku {
 }
 
 export class Product {
+	@ApiProperty({ description: '图片', example: 'https://oss.lisfes.cn/service/1605967031503.png' })
+	@IsNotEmpty({ message: 'picUrl 必填' })
+	picUrl: string
+
 	@ApiProperty({ description: '商品头图', example: ['https://oss.lisfes.cn/upload/1592634876729.jpg'] })
 	@IsNotEmpty({ message: 'banner 必填' })
 	@IsString({ each: true, message: 'string 商品头图' })
