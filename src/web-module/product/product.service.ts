@@ -7,7 +7,7 @@ import { FormatEntity } from '@/entity/format.entity'
 import { FormatAttrEntity } from '@/entity/format.attr.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
-import { ProductFormatAttrEntity } from '@/entity/product.format.attr.entity'
+import { ProductSkuEntity } from '@/entity/product.sku.entity'
 import * as Dto from '@/web-module/product/product.dto'
 
 @Injectable()
@@ -19,7 +19,7 @@ export class ProductService {
 		@InjectRepository(FormatAttrEntity) private readonly formatAttrModel: Repository<FormatAttrEntity>,
 		@InjectRepository(ProductEntity) private readonly productModel: Repository<ProductEntity>,
 		@InjectRepository(ProductFormatEntity) private readonly productFormatModel: Repository<ProductFormatEntity>,
-		@InjectRepository(ProductFormatAttrEntity) private productFormatAttrModel: Repository<ProductFormatAttrEntity>
+		@InjectRepository(ProductSkuEntity) private readonly productSkuModel: Repository<ProductSkuEntity>
 	) {}
 
 	//创建商品
@@ -45,32 +45,46 @@ export class ProductService {
 				admin
 			})
 
-			await new Promise(async (resolve, reject) => {
-				;(params.format || []).map(async props => {
-					const format = await this.formatModel.findOne({ where: { id: props.formatId } })
-					const newFormat = await this.productFormatModel.create({
-						formatId: format.id,
-						name: format.name,
-						product: saveProduct
-					})
-					const saveFormat = await this.productFormatModel.save(newFormat)
-					const productAttr = (props.attr || []).map(async id => {
-						const attr = await this.formatAttrModel.findOne({ where: { id } })
-						const newAttr = await this.productFormatAttrModel.create({
-							attrId: attr.id,
-							name: attr.name
-						})
-						const saveAttr = await this.productFormatAttrModel.save({
-							...newAttr,
-							format: saveFormat
-						})
-						return saveAttr
-					})
-					return saveFormat
+			//规格连表存储
+			for (const props of params.format) {
+				const format = await this.formatModel.findOne({ where: { id: props.formatId } })
+				const attr = await this.formatAttrModel
+					.createQueryBuilder('attr')
+					.where('attr.id IN (:id)', { id: props.attr })
+					.getMany()
+				const newFormat = await this.productFormatModel.create({
+					formatId: format.id,
+					name: format.name,
+					product: saveProduct,
+					attr: (attr || []).map(k => ({
+						name: k.name,
+						attrId: k.id,
+						status: k.status
+					}))
 				})
-				resolve()
+				await this.productFormatModel.save(newFormat)
+			}
+
+			//sku连表存储
+			for (const props of params.sku) {
+				const sku = await this.productSkuModel.create({
+					skukey: props.skukey,
+					skuname: props.skuname,
+					price: props.price,
+					costprice: props.costprice,
+					stock: props.stock,
+					coding: props.coding
+				})
+				await this.productSkuModel.save({
+					...sku,
+					product: saveProduct
+				})
+			}
+
+			return await this.productModel.findOne({
+				where: { id: saveProduct.id },
+				relations: ['source', 'format', 'sku']
 			})
-			return await this.productModel.findOne({ where: { id: saveProduct.id }, relations: ['source', 'format'] })
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
@@ -79,7 +93,10 @@ export class ProductService {
 	//获取商品详情
 	async productInfo(id: number) {
 		try {
-			const product = await this.productModel.findOne({ where: { id }, relations: ['source', 'format'] })
+			const product = await this.productModel.findOne({
+				where: { id },
+				relations: ['source', 'format', 'sku']
+			})
 			if (product) {
 				return product
 			}

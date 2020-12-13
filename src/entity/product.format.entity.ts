@@ -1,6 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { ProductEntity } from '@/entity/product.entity'
-import { ProductFormatAttrEntity } from '@/entity/product.format.attr.entity'
+
+interface Attr {
+	attrId: number
+	name: string
+	status: number
+}
 
 @Entity('product-format')
 export class ProductFormatEntity {
@@ -13,16 +18,27 @@ export class ProductFormatEntity {
 	@Column({ comment: '规则值', nullable: false })
 	name: string
 
+	@Column('simple-array', {
+		comment: '规则子列表',
+		nullable: false,
+		transformer: {
+			from: value => JSON.parse(value),
+			to: value => JSON.stringify(value)
+		}
+	})
+	attr: Attr[]
+
+	@Column({
+		type: 'timestamp',
+		comment: '创建时间',
+		default: () => 'CURRENT_TIMESTAMP',
+		nullable: false
+	})
+	createTime: string
+
 	@ManyToOne(
 		type => ProductEntity,
 		product => product.format
 	)
 	product: ProductEntity
-
-	@OneToMany(
-		type => ProductFormatAttrEntity,
-		product => product.format,
-		{ cascade: true }
-	)
-	attr: ProductFormatAttrEntity[]
 }

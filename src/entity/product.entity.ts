@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { AdminEntity } from '@/entity/admin.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
+import { ProductSkuEntity } from '@/entity/product.sku.entity'
 
 @Entity('product')
 export class ProductEntity {
@@ -32,6 +33,14 @@ export class ProductEntity {
 	@Column({ comment: '规则状态', nullable: false, default: 1 })
 	status: number
 
+	@Column({
+		type: 'timestamp',
+		comment: '创建时间',
+		default: () => 'CURRENT_TIMESTAMP',
+		nullable: false
+	})
+	createTime: string
+
 	@ManyToOne(
 		type => AdminEntity,
 		admin => admin.product
@@ -46,8 +55,15 @@ export class ProductEntity {
 
 	@OneToMany(
 		type => ProductFormatEntity,
-		source => source.product,
+		format => format.product,
 		{ cascade: true }
 	)
 	format: ProductFormatEntity[]
+
+	@OneToMany(
+		type => ProductSkuEntity,
+		sku => sku.product,
+		{ cascade: true }
+	)
+	sku: ProductSkuEntity[]
 }

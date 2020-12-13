@@ -19,7 +19,7 @@ import { FormatEntity } from '@/entity/format.entity'
 import { FormatAttrEntity } from '@/entity/format.attr.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
-import { ProductFormatAttrEntity } from '@/entity/product.format.attr.entity'
+import { ProductSkuEntity } from '@/entity/product.sku.entity'
 
 @Module({
 	imports: [
@@ -33,7 +33,7 @@ import { ProductFormatAttrEntity } from '@/entity/product.format.attr.entity'
 			FormatAttrEntity,
 			ProductEntity,
 			ProductFormatEntity,
-			ProductFormatAttrEntity
+			ProductSkuEntity
 		]),
 		HttpModule,
 		AppMainModule,
