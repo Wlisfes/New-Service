@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne } from 'typeorm'
+import { HotwellEntity } from '@/entity/hotwell.entity'
 import { AdminEntity } from '@/entity/admin.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
@@ -40,6 +41,12 @@ export class ProductEntity {
 		nullable: false
 	})
 	createTime: string
+
+	@OneToOne(
+		type => HotwellEntity,
+		hotwell => hotwell.product
+	)
+	hotwell: HotwellEntity
 
 	@ManyToOne(
 		type => AdminEntity,

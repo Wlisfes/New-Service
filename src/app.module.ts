@@ -20,6 +20,7 @@ import { FormatAttrEntity } from '@/entity/format.attr.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
+import { HotwellEntity } from '@/entity/hotwell.entity'
 
 @Module({
 	imports: [
@@ -33,7 +34,8 @@ import { ProductSkuEntity } from '@/entity/product.sku.entity'
 			FormatAttrEntity,
 			ProductEntity,
 			ProductFormatEntity,
-			ProductSkuEntity
+			ProductSkuEntity,
+			HotwellEntity
 		]),
 		HttpModule,
 		AppMainModule,
