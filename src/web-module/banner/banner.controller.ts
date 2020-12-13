@@ -10,7 +10,7 @@ export class BannerController {
 	constructor(private readonly bannerService: BannerService) {}
 
 	@ApiOperation({ summary: '创建banner' })
-	@ApiHeader({ name: 'access-token', required: true })
+	@ApiHeader({ name: 'web-token', required: true })
 	@Post('create')
 	@AuthToken(true)
 	async createAdmin(@Body() body: Face.CreateBannerDto, @Req() req: { ipv4: string; admin: { uid: number } }) {

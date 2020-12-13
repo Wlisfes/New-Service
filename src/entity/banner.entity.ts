@@ -15,8 +15,11 @@ export class BannerEntity {
 	@Column({ comment: '商品id', nullable: false })
 	proid: number
 
-	@Column({ comment: '状态', nullable: false, default: () => 1 })
+	@Column({ comment: '状态', nullable: false, default: 1 })
 	status: number
+
+	@Column({ comment: '排序', nullable: false, default: 1 })
+	sort: number
 
 	@Column({
 		type: 'timestamp',

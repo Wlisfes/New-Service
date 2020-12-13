@@ -7,9 +7,10 @@ import { AdminService } from '@/web-module/admin/admin.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { BannerEntity } from '@/entity/banner.entity'
 import { AdminEntity } from '@/entity/admin.entity'
+import { ProductEntity } from '@/entity/product.entity'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([BannerEntity, AdminEntity])],
+	imports: [TypeOrmModule.forFeature([BannerEntity, AdminEntity, ProductEntity])],
 	controllers: [BannerController],
 	providers: [BannerService, AdminService]
 })

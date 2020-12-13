@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 //守卫
 import { APP_GUARD } from '@nestjs/core'
@@ -23,3 +24,16 @@ import { HotwellModule } from '@/web-module/hotwell/hotwell.module'
 	]
 })
 export class WebMainModule {}
+
+export async function webSwagger(app) {
+	const options = new DocumentBuilder()
+		.setTitle('农贸生鲜系统')
+		.setDescription('农贸生鲜系统Api文档')
+		.setVersion('1.0')
+		.build()
+	const document = SwaggerModule.createDocument(app, options, {
+		include: [AdminModule, UserModule, BannerModule, SourceModule, FormatModule, ProductModule, HotwellModule]
+	})
+	SwaggerModule.setup('api-web', app, document)
+	return this
+}
