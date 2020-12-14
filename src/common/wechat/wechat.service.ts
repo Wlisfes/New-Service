@@ -1,6 +1,7 @@
 import { Injectable, Inject, HttpService, HttpException, HttpStatus } from '@nestjs/common'
 import { OPTIONS, WechatOption } from '@/common/wechat/wechat.provider'
 import { RedisService } from '@/common/redis/redis.service'
+import * as Face from '@/common/wechat/wechat.interface'
 
 @Injectable()
 export class WechatService {
@@ -17,7 +18,7 @@ export class WechatService {
 	}
 
 	//获取小程序凭证access_token
-	async accesstoken() {
+	async accesstoken(): Promise<string> {
 		try {
 			const access_token = await this.redisService.getStore('access_token')
 			if (access_token) {
@@ -47,7 +48,7 @@ export class WechatService {
 	}
 
 	//微信登录获取openid、session_key
-	async login(code: string) {
+	async login(code: string): Promise<Face.LoginOption> {
 		try {
 			const response = await this.httpService
 				.request({

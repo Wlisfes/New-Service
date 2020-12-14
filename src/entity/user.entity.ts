@@ -29,9 +29,10 @@ export class UserEntity {
 		comment: '手机号',
 		length: 11,
 		nullable: true,
+		default: null,
 		transformer: {
 			from: value => (value ? Number(value) : null),
-			to: value => String(value)
+			to: value => (value ? String(value) : null)
 		}
 	})
 	mobile: string
