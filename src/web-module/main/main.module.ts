@@ -28,7 +28,7 @@ export class WebMainModule {}
 
 export async function webSwagger(app) {
 	const options = new DocumentBuilder()
-		.setTitle('农贸生鲜系统')
+		.setTitle('农贸生鲜系统WEB端Api')
 		.setDescription('农贸生鲜系统Api文档')
 		.setVersion('1.0')
 		.build()

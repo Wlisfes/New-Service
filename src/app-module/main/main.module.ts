@@ -23,7 +23,7 @@ export class AppMainModule {}
 
 export async function appSwagger(app) {
 	const options = new DocumentBuilder()
-		.setTitle('农贸生鲜系统')
+		.setTitle('农贸生鲜系统APP端Api')
 		.setDescription('农贸生鲜系统Api文档')
 		.setVersion('1.0')
 		.build()

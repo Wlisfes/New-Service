@@ -5,17 +5,14 @@ import { OssService } from '@/common/oss/oss.service'
 
 @Global()
 @Module({
-	imports: [],
-	controllers: [OssController],
-	providers: [OssService],
-	exports: [OssService]
+	controllers: [OssController]
 })
 export class OssModule {
 	public static forRoot(options: OSSOptions): DynamicModule {
 		return {
 			module: OssModule,
-			providers: [ossProvider(), { provide: OSS_OPTIONS, useValue: options }],
-			exports: [OssModule]
+			providers: [ossProvider(), { provide: OSS_OPTIONS, useValue: options }, OssService],
+			exports: [OssService]
 		}
 	}
 }

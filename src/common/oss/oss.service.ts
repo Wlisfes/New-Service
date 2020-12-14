@@ -31,8 +31,8 @@ export class OSSBase {
 @Injectable()
 export class OssService extends OSSBase {
 	constructor(
-		@Inject(OSS_CONST) protected readonly ossClient: OSS,
-		@Inject(OSS_OPTIONS) protected readonly options: OSSOptions
+		@Inject(OSS_CONST) public readonly ossClient: OSS,
+		@Inject(OSS_OPTIONS) public readonly options: OSSOptions
 	) {
 		super()
 	}

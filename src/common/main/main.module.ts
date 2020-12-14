@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { SessionModule } from 'nestjs-session'
 import { OssModule } from '@/common/oss/oss.module'
 import { RedisModule } from '@/common/redis/redis.module'
+import { WechatModule } from '@/common/wechat/wechat.module'
 import { UtilsModule } from '@/common/utils/utils.module'
 import { AuthModule } from '@/common/auth/auth.module'
 
@@ -43,9 +44,13 @@ import { AuthModule } from '@/common/auth/auth.module'
 			},
 			domain: process.env.OSS_DOMAIN
 		}),
+		WechatModule.forRoot({
+			AppID: process.env.APPID,
+			AppSecret: process.env.APPSECRET
+		}),
 		AuthModule,
 		UtilsModule
 	],
-	exports: [RedisModule, UtilsModule, AuthModule]
+	exports: [RedisModule, OssModule, WechatModule, UtilsModule, AuthModule]
 })
 export class CommonMainModule {}
