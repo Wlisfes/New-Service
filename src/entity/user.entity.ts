@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, BeforeInsert } from 'typeorm'
+import { UserStarEntity } from '@/entity/user.star.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -44,4 +45,11 @@ export class UserEntity {
 		nullable: false
 	})
 	createTime: string
+
+	@OneToMany(
+		type => UserStarEntity,
+		star => star.user,
+		{ cascade: true }
+	)
+	star: UserStarEntity[]
 }

@@ -1,4 +1,4 @@
-import { Module, HttpModule } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { OssModule } from '@/common/oss/oss.module'
 import { WechatModule } from '@/common/wechat/wechat.module'
 import { UserService } from '@/app-module/user/user.service'
@@ -9,6 +9,7 @@ import { UserEntity } from '@/entity/user.entity'
 @Module({
 	imports: [TypeOrmModule.forFeature([UserEntity]), WechatModule, OssModule],
 	providers: [UserService],
-	controllers: [UserController]
+	controllers: [UserController],
+	exports: [UserService]
 })
 export class UserModule {}
