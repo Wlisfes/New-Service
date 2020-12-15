@@ -4,6 +4,7 @@ import { AuthService } from '@/common/auth/auth.service'
 import { RedisService } from '@/common/redis/redis.service'
 import { AdminService } from '@/web-module/admin/admin.service'
 import { ADMINKEY } from '@/interface/const.interface'
+const WEB_AUTH = Symbol('WEB_AUTH')
 
 @Injectable()
 export class WebGuard implements CanActivate {
@@ -16,7 +17,7 @@ export class WebGuard implements CanActivate {
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest()
-		const auth = this.reflector.get<boolean>('AUTH', context.getHandler())
+		const auth = this.reflector.get<boolean>(WEB_AUTH, context.getHandler())
 
 		//ipv4挂载
 		request.ipv4 = request.headers['x-forwarded-for'] || request.headers['x-real-ip'] || '127.0.0.1'
@@ -50,4 +51,4 @@ export class WebGuard implements CanActivate {
 }
 
 //管理员登录守卫  使用AuthToken守卫的接口会验证管理员登录
-export const AuthToken = (auth: boolean) => SetMetadata('AUTH', auth)
+export const AuthToken = (auth: boolean) => SetMetadata(WEB_AUTH, auth)
