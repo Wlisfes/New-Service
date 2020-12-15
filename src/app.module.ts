@@ -21,6 +21,8 @@ import { ProductEntity } from '@/entity/product.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
 import { HotwellEntity } from '@/entity/hotwell.entity'
+import { UserStarEntity } from '@/entity/user.star.entity'
+import { AddressEntity } from '@/entity/user.address.entity'
 
 @Module({
 	imports: [
@@ -35,7 +37,9 @@ import { HotwellEntity } from '@/entity/hotwell.entity'
 			ProductEntity,
 			ProductFormatEntity,
 			ProductSkuEntity,
-			HotwellEntity
+			HotwellEntity,
+			UserStarEntity,
+			AddressEntity
 		]),
 		HttpModule,
 		AppMainModule,
