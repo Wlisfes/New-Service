@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
-import { CouponEntity } from '@/entity/coupon.entity'
+import { CouponEntity } from '@/entity/user.coupon.entity'
 
 @Entity('user-order')
 export class OrderEntity {

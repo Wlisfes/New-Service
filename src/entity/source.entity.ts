@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 import { AdminEntity } from '@/entity/admin.entity'
 import { ProductEntity } from '@/entity/product.entity'
-import { CouponEntity } from '@/entity/coupon.entity'
+import { CouponEntity } from '@/entity/user.coupon.entity'
 
 @Entity('source')
 export class SourceEntity {

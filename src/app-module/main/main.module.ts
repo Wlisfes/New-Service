@@ -10,6 +10,7 @@ import { ProductModule } from '@/app-module/product/product.module'
 import { AddressModule } from '@/app-module/address/address.module'
 import { WheeModule } from '@/app-module/whee/whee.module'
 import { OrderModule } from '@/app-module/order/order.module'
+import { CouponModule } from '@/app-module/coupon/coupon.module'
 
 @Module({
 	imports: [
@@ -20,7 +21,8 @@ import { OrderModule } from '@/app-module/order/order.module'
 		ProductModule,
 		AddressModule,
 		WheeModule,
-		OrderModule
+		OrderModule,
+		CouponModule
 	],
 	providers: [
 		{
@@ -46,7 +48,8 @@ export async function appSwagger(app) {
 			ProductModule,
 			AddressModule,
 			WheeModule,
-			OrderModule
+			OrderModule,
+			CouponModule
 		]
 	})
 	SwaggerModule.setup('api-app', app, document)
