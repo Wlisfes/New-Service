@@ -4,6 +4,7 @@ import { AdminEntity } from '@/entity/admin.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
+import { UserStarEntity } from '@/entity/user.star.entity'
 
 @Entity('product')
 export class ProductEntity {
@@ -76,4 +77,11 @@ export class ProductEntity {
 		{ cascade: true }
 	)
 	sku: ProductSkuEntity[]
+
+	@OneToMany(
+		type => UserStarEntity,
+		star => star.product,
+		{ cascade: true }
+	)
+	star: UserStarEntity[]
 }

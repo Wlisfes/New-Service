@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-
-//守卫
 import { APP_GUARD } from '@nestjs/core'
 import { AppGuard } from '@/guard/app.guard'
-
 import { UserModule } from '@/app-module/user/user.module'
 import { BannerModule } from '@/app-module/banner/banner.module'
 import { SourceModule } from '@/app-module/source/source.module'
 import { HotwellModule } from '@/app-module/hotwell/hotwell.module'
+import { ProductModule } from '@/app-module/product/product.module'
 
 @Module({
-	imports: [UserModule, BannerModule, SourceModule, HotwellModule],
+	imports: [UserModule, BannerModule, SourceModule, HotwellModule, ProductModule],
 	providers: [
 		{
 			provide: APP_GUARD,
@@ -28,7 +26,7 @@ export async function appSwagger(app) {
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, options, {
-		include: [UserModule, BannerModule, SourceModule, HotwellModule]
+		include: [UserModule, BannerModule, SourceModule, HotwellModule, ProductModule]
 	})
 	SwaggerModule.setup('api-app', app, document)
 	return this
