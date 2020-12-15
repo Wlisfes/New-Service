@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert } from 
 import { UserStarEntity } from '@/entity/user.star.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
+import { OrderEntity } from '@/entity/order.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -68,4 +69,11 @@ export class UserEntity {
 		{ cascade: true }
 	)
 	whee: AddressEntity[]
+
+	@OneToMany(
+		type => OrderEntity,
+		order => order.user,
+		{ cascade: true }
+	)
+	order: OrderEntity[]
 }

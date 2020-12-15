@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import { OrderEntity } from '@/entity/order.entity'
 
 @Entity('user-whee')
 export class WheeEntity {
@@ -32,6 +33,12 @@ export class WheeEntity {
 		product => product.sku
 	)
 	product: ProductEntity
+
+	@ManyToOne(
+		type => OrderEntity,
+		order => order.whee
+	)
+	order: OrderEntity
 
 	@ManyToOne(
 		type => UserEntity,
