@@ -1,11 +1,7 @@
 import { Module } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-
-//守卫
 import { APP_GUARD } from '@nestjs/core'
 import { WebGuard } from '@/guard/web.guard'
-
-//模块
 import { OssModule } from '@/common/oss/oss.module'
 import { AdminModule } from '@/web-module/admin/admin.module'
 import { UserModule } from '@/web-module/user/user.module'
@@ -14,9 +10,19 @@ import { SourceModule } from '@/web-module/source/source.module'
 import { FormatModule } from '@/web-module/format/format.module'
 import { ProductModule } from '@/web-module/product/product.module'
 import { HotwellModule } from '@/web-module/hotwell/hotwell.module'
+import { CouponModule } from '@/web-module/coupon/coupon.module'
 
 @Module({
-	imports: [AdminModule, UserModule, BannerModule, SourceModule, FormatModule, ProductModule, HotwellModule],
+	imports: [
+		AdminModule,
+		UserModule,
+		BannerModule,
+		SourceModule,
+		FormatModule,
+		ProductModule,
+		HotwellModule,
+		CouponModule
+	],
 	providers: [
 		{
 			provide: APP_GUARD,
@@ -41,7 +47,8 @@ export async function webSwagger(app) {
 			SourceModule,
 			FormatModule,
 			ProductModule,
-			HotwellModule
+			HotwellModule,
+			CouponModule
 		]
 	})
 	SwaggerModule.setup('api-web', app, document)

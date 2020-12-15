@@ -3,6 +3,7 @@ import { hashSync } from 'bcryptjs'
 import { BannerEntity } from '@/entity/banner.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import { CouponEntity } from '@/entity/user.coupon.entity'
 
 @Entity('admin')
 export class AdminEntity {
@@ -75,4 +76,11 @@ export class AdminEntity {
 		{ cascade: true }
 	)
 	product: ProductEntity[]
+
+	@OneToMany(
+		type => CouponEntity,
+		coupon => coupon.admin,
+		{ cascade: true }
+	)
+	coupon: CouponEntity[]
 }

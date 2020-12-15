@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTabl
 import { UserEntity } from '@/entity/user.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { OrderEntity } from '@/entity/order.entity'
+import { AdminEntity } from '@/entity/admin.entity'
 
 @Entity('user-coupon')
 export class CouponEntity {
@@ -39,6 +40,12 @@ export class CouponEntity {
 		user => user.coupon
 	)
 	user: UserEntity
+
+	@ManyToOne(
+		type => AdminEntity,
+		admin => admin.coupon
+	)
+	admin: AdminEntity
 
 	@ManyToOne(
 		type => OrderEntity,

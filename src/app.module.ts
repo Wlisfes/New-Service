@@ -24,6 +24,8 @@ import { HotwellEntity } from '@/entity/hotwell.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
+import { CouponEntity } from '@/entity/user.coupon.entity'
+import { OrderEntity } from '@/entity/order.entity'
 
 @Module({
 	imports: [
@@ -41,7 +43,9 @@ import { WheeEntity } from '@/entity/whee.entity'
 			HotwellEntity,
 			UserStarEntity,
 			AddressEntity,
-			WheeEntity
+			WheeEntity,
+			CouponEntity,
+			OrderEntity
 		]),
 		HttpModule,
 		AppMainModule,
