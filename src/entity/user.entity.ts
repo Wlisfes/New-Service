@@ -3,6 +3,7 @@ import { UserStarEntity } from '@/entity/user.star.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
+import { CouponEntity } from '@/entity/coupon.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -76,4 +77,11 @@ export class UserEntity {
 		{ cascade: true }
 	)
 	order: OrderEntity[]
+
+	@OneToMany(
+		type => CouponEntity,
+		order => order.user,
+		{ cascade: true }
+	)
+	coupon: CouponEntity[]
 }
