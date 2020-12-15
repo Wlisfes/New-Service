@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert } from 'typeorm'
 import { UserStarEntity } from '@/entity/user.star.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
+import { WheeEntity } from '@/entity/whee.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -55,9 +56,16 @@ export class UserEntity {
 	star: UserStarEntity[]
 
 	@OneToMany(
-		type => AddressEntity,
+		type => WheeEntity,
 		address => address.user,
 		{ cascade: true }
 	)
 	address: AddressEntity[]
+
+	@OneToMany(
+		type => AddressEntity,
+		whee => whee.user,
+		{ cascade: true }
+	)
+	whee: AddressEntity[]
 }
