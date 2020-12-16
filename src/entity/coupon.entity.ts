@@ -1,15 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
-import { UserEntity } from '@/entity/user.entity'
 import { SourceEntity } from '@/entity/source.entity'
-import { OrderEntity } from '@/entity/order.entity'
+import { AdminEntity } from '@/entity/admin.entity'
 
-@Entity('user-coupon')
-export class UserCouponEntity {
+@Entity('coupon')
+export class CouponEntity {
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
-
-	@Column({ comment: '优惠劵原始id', nullable: false })
-	receive: number
 
 	@Column({ comment: '最低满足金额', nullable: false, default: 1 })
 	satisfy: number
@@ -46,14 +42,8 @@ export class UserCouponEntity {
 	source: SourceEntity[]
 
 	@ManyToOne(
-		type => UserEntity,
-		user => user.coupon
+		type => AdminEntity,
+		admin => admin.coupon
 	)
-	user: UserEntity
-
-	@ManyToOne(
-		type => OrderEntity,
-		order => order.coupon
-	)
-	order: OrderEntity
+	admin: AdminEntity
 }

@@ -17,7 +17,7 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: '根据uid拉取用户信息' })
-	@ApiQuery({ name: 'uid', required: true })
+	@ApiQuery({ name: 'uid', required: true, example: 1607959269654 })
 	@Get('one/uid')
 	async findOneUid(@Query('uid') uid: number) {
 		return await this.userService.findOneUid(uid)

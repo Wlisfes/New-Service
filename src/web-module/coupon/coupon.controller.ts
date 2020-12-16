@@ -23,7 +23,7 @@ export class CouponController {
 	@ApiHeader({ name: 'web-token', required: true })
 	@Get('list')
 	@AuthToken(true)
-	async couponList() {
-		return await this.couponService.couponList()
+	async couponList(@Query() query: Dto.CouponList) {
+		return await this.couponService.couponList(query)
 	}
 }

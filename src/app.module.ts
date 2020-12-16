@@ -24,7 +24,8 @@ import { HotwellEntity } from '@/entity/hotwell.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
-import { CouponEntity } from '@/entity/user.coupon.entity'
+import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { CouponEntity } from '@/entity/coupon.entity'
 import { OrderEntity } from '@/entity/order.entity'
 
 @Module({
@@ -44,6 +45,7 @@ import { OrderEntity } from '@/entity/order.entity'
 			UserStarEntity,
 			AddressEntity,
 			WheeEntity,
+			UserCouponEntity,
 			CouponEntity,
 			OrderEntity
 		]),

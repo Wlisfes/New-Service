@@ -3,7 +3,7 @@ import { hashSync } from 'bcryptjs'
 import { BannerEntity } from '@/entity/banner.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductEntity } from '@/entity/product.entity'
-import { CouponEntity } from '@/entity/user.coupon.entity'
+import { CouponEntity } from '@/entity/coupon.entity'
 
 @Entity('admin')
 export class AdminEntity {

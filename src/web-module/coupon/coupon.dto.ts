@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsEnum, IsNumber } from 'class-validator'
+import { Type } from 'class-transformer'
 import * as Face from '@/interface/common.interface'
 
 export class Coupon {
@@ -34,6 +35,26 @@ export class Coupon {
 	@ApiProperty({ description: '优惠劵结束时间', example: '2021-12-12 24:00:00' })
 	@IsNotEmpty({ message: 'endTime 必填' })
 	endTime: string
+}
+
+export class CouponList {
+	@ApiProperty({ description: '偏移数量', example: 0 })
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber({}, { message: 'offset is number' })
+	offset?: number
+
+	@ApiProperty({ description: '查询数量', example: 10 })
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber({}, { message: 'limit is number' })
+	limit?: number
+
+	@ApiProperty({ description: '类型状态', example: 1 })
+	@IsOptional()
+	@Type(() => Number)
+	@IsEnum(Face.Mode, { message: 'status 类型错误' })
+	status: Face.Mode
 }
 
 export class CreateCoupon extends Coupon {}

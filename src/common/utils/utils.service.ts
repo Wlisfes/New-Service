@@ -1,11 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
+import * as day from 'dayjs'
 import * as http from 'http'
 import * as https from 'https'
 
 @Injectable()
 export class UtilsService {
 	//下载图片流
-	downloadFile(src: string): Promise<Buffer> {
+	public downloadFile(src: string): Promise<Buffer> {
 		const rule = /(https):\/\/([\w.]+\/?)\S*/
 		const request = rule.test(src) ? https : http
 		return new Promise(resolve => {
@@ -25,5 +26,16 @@ export class UtilsService {
 				})
 			})
 		})
+	}
+
+	//当前时间与未来时间对比差
+	public currentTimediff(date?: string | number | Date) {
+		const current = day()
+		const end = day(date)
+		const diff = end.diff(current)
+		if (diff > 1000) {
+			return Math.ceil(diff / 1000)
+		}
+		return 0
 	}
 }

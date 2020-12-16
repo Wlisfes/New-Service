@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
-import { CouponEntity } from '@/entity/user.coupon.entity'
+import { UserCouponEntity } from '@/entity/user.coupon.entity'
 
 @Entity('user-order')
 export class OrderEntity {
@@ -33,9 +33,9 @@ export class OrderEntity {
 	whee: WheeEntity[]
 
 	@OneToMany(
-		type => CouponEntity,
+		type => UserCouponEntity,
 		coupon => coupon,
 		{ cascade: true }
 	)
-	coupon: CouponEntity[]
+	coupon: UserCouponEntity[]
 }
