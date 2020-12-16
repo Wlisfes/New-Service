@@ -48,7 +48,7 @@ export class CouponService {
 	}
 
 	//我的优惠劵
-	async couponList(params: Dto.CouponList, uid: number) {
+	async userCoupon(params: Dto.UserCoupon, uid: number) {
 		try {
 			const offset = params.offset || 0
 			const limit = params.limit || 2
@@ -66,6 +66,33 @@ export class CouponService {
 				skip: offset,
 				take: limit
 			})
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//优惠劵列表
+	async couponList(uid?: number) {
+		try {
+			const coupon = await this.couponModel.find({
+				where: { status: 1 },
+				relations: ['source']
+			})
+			if (uid) {
+				const user = await this.userModel.findOne({ where: { uid } })
+				const userCoupon = await this.userCouponModel.find({
+					where: { user, status: 1 },
+					relations: ['user']
+				})
+				return coupon.map(props => {
+					const u = userCoupon.find(k => k.receive === props.id)
+					return {
+						...props,
+						user: u?.user || null
+					}
+				})
+			}
+			return coupon
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

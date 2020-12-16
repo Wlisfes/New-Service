@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, Query, Req } from '@nestjs/common'
 import { CouponService } from '@/app-module/coupon/coupon.service'
 import { ApiTags, ApiOperation, ApiHeader, ApiQuery } from '@nestjs/swagger'
-import { AuthToken } from '@/guard/app.guard'
+import { AuthToken, AppToken } from '@/guard/app.guard'
 import * as Face from '@/interface/entity.interface'
 import * as Dto from '@/app-module/coupon/coupon.dto'
 import * as path from '@/interface/path.interface'
@@ -20,12 +20,20 @@ export class CouponController {
 		return await this.couponService.createCoupon(id, req.user.uid)
 	}
 
-	//我的优惠劵
 	@ApiOperation({ summary: '我的优惠劵' })
 	@ApiHeader({ name: 'app-token', required: true })
+	@Get('user')
+	@AuthToken(true)
+	async userCoupon(@Query() query: Dto.UserCoupon, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.couponService.userCoupon(query, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '优惠劵列表' })
+	@ApiHeader({ name: 'app-token' })
 	@Get('list')
 	@AuthToken(true)
-	async couponList(@Query() query: Dto.CouponList, @Req() req: { ipv4: string; user: Face.UserFace }) {
-		return await this.couponService.couponList(query, req.user.uid)
+	@AppToken(true)
+	async couponList(@Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.couponService.couponList(req.user?.uid)
 	}
 }

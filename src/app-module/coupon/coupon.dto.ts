@@ -7,7 +7,7 @@ export enum StatusEnum {
 	'status-0' = '优惠劵已删除'
 }
 
-export class CouponList {
+export class UserCoupon {
 	@ApiProperty({ description: '偏移数量', example: 0 })
 	@IsOptional()
 	@Type(() => Number)
