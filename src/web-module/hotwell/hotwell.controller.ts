@@ -9,7 +9,7 @@ import { AuthToken } from '@/guard/web.guard'
 export class HotwellController {
 	constructor(private readonly hotwellService: HotwellService) {}
 
-	@ApiOperation({ summary: '创建规则名称' })
+	@ApiOperation({ summary: '创建热销' })
 	@ApiHeader({ name: 'web-token', required: true })
 	@Post('create')
 	@AuthToken(true)

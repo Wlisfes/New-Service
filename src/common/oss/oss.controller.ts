@@ -21,22 +21,22 @@ export const ApiFile = (fileName: string = 'file'): MethodDecorator => (
 export class OssController {
 	constructor(private readonly ossService: OssService) {}
 
-	@ApiOperation({ summary: '单张图片上传oss 可用户上传头像' })
+	// @ApiOperation({ summary: '上传头像' })
+	// @ApiConsumes('multipart/form-data')
+	// @ApiFile('file')
+	// @Post('upload/file')
+	// @UseInterceptors(FileInterceptor('file'))
+	// public async uploadFile(@UploadedFile() file) {
+	// 	return await this.ossService.uploadFile(file, 'service')
+	// }
+
+	@ApiOperation({ summary: '单张图片上传oss' })
 	@ApiConsumes('multipart/form-data')
 	@ApiFile('file')
 	@Post('upload/file')
 	@UseInterceptors(FileInterceptor('file'))
-	public async uploadFile(@UploadedFile() file) {
-		return await this.ossService.uploadFile(file, 'service')
-	}
-
-	@ApiOperation({ summary: '单张图片上传oss 可上传文章所需图片' })
-	@ApiConsumes('multipart/form-data')
-	@ApiFile('file')
-	@Post('upload/file/pic')
-	@UseInterceptors(FileInterceptor('file'))
 	public async uploadFileArticle(@UploadedFile() file) {
-		return await this.ossService.uploadFile(file, 'service')
+		return await this.ossService.uploadFile(file, 'store/upload')
 	}
 
 	@ApiOperation({ summary: '多张图片上传oss' })
@@ -45,6 +45,6 @@ export class OssController {
 	@Post('upload/files')
 	@UseInterceptors(FilesInterceptor('file'))
 	public async uploadFiles(@UploadedFiles() files) {
-		return await this.ossService.uploadFiles(files, 'service')
+		return await this.ossService.uploadFiles(files, 'store/upload')
 	}
 }

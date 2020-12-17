@@ -45,25 +45,48 @@ export class ProductSku {
 }
 
 export class Product {
-	@ApiProperty({ description: '图片', example: 'https://oss.lisfes.cn/service/1605967031503.png' })
+	@ApiProperty({ description: '图片', example: 'https://oss.lisfes.cn/store/upload/1608199021074.webp' })
 	@IsNotEmpty({ message: 'picUrl 必填' })
 	picUrl: string
 
-	@ApiProperty({ description: '商品头图', example: ['https://oss.lisfes.cn/upload/1592634876729.jpg'] })
+	@ApiProperty({
+		description: '商品头图',
+		example: [
+			'https://oss.lisfes.cn/store/upload/1608199021074.webp',
+			'https://oss.lisfes.cn/store/upload/1608199508280.webp',
+			'https://oss.lisfes.cn/store/upload/1608199629620.webp',
+			'https://oss.lisfes.cn/store/upload/1608199657925.webp',
+			'https://oss.lisfes.cn/store/upload/1608199684502.webp',
+			'https://oss.lisfes.cn/store/upload/1608199698930.webp'
+		]
+	})
 	@IsNotEmpty({ message: 'banner 必填' })
 	@IsString({ each: true, message: 'string 商品头图' })
 	banner: string[]
 
-	@ApiProperty({ description: '商品详情图', example: ['https://oss.lisfes.cn/upload/1592634876729.jpg'] })
+	@ApiProperty({
+		description: '商品详情图',
+		example: [
+			'https://oss.lisfes.cn/store/upload/1608199757906.webp',
+			'https://oss.lisfes.cn/store/upload/1608199779302.webp',
+			'https://oss.lisfes.cn/store/upload/1608199871659.webp',
+			'https://oss.lisfes.cn/store/upload/1608199937673.webp',
+			'https://oss.lisfes.cn/store/upload/1608199955298.webp',
+			'https://oss.lisfes.cn/store/upload/1608199968379.webp',
+			'https://oss.lisfes.cn/store/upload/1608199982209.webp',
+			'https://oss.lisfes.cn/store/upload/1608199993638.webp',
+			'https://oss.lisfes.cn/store/upload/1608200005909.webp'
+		]
+	})
 	@IsNotEmpty({ message: 'content 必填' })
 	@IsString({ each: true, message: 'string 商品详情图' })
 	content: string[]
 
-	@ApiProperty({ description: '商品title', example: '澳洲进口红肉橙' })
+	@ApiProperty({ description: '商品title', example: '水果猕猴桃奇异果绿心猕猴桃 3斤装 单果80g起源产地直发' })
 	@IsNotEmpty({ message: 'title 必填' })
 	title: string
 
-	@ApiProperty({ description: '商品描述', example: '澳洲进口红肉橙' })
+	@ApiProperty({ description: '商品描述', example: '水果猕猴桃奇异果绿心猕猴桃 3斤装 单果80g起源产地直发' })
 	@IsNotEmpty({ message: 'desc 必填' })
 	desc: string
 
