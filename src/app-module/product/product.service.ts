@@ -4,13 +4,16 @@ import { Repository } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
+import { CouponEntity } from '@/entity/coupon.entity'
+import * as Dto from '@/app-module/product/product.dto'
 
 @Injectable()
 export class ProductService {
 	constructor(
 		@InjectRepository(UserEntity) private readonly userModel: Repository<UserEntity>,
 		@InjectRepository(ProductEntity) private readonly productModel: Repository<ProductEntity>,
-		@InjectRepository(UserStarEntity) private readonly userStarModel: Repository<UserStarEntity>
+		@InjectRepository(UserStarEntity) private readonly userStarModel: Repository<UserStarEntity>,
+		@InjectRepository(CouponEntity) private readonly couponModel: Repository<CouponEntity>
 	) {}
 
 	//商品详情
@@ -53,6 +56,46 @@ export class ProductService {
 				await this.userStarModel.save(userStar)
 				return '收藏成功'
 			}
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//新品推荐
+	async productLove(params: Dto.ProductLove) {
+		try {
+			const offset = params.offset || 0
+			const limit = params.limit || 10
+			const total = await this.productModel
+				.createQueryBuilder('product')
+				.where('product.status = :status', { status: 1 })
+				.orderBy('product.createTime', 'DESC')
+				.getCount()
+
+			const list = await this.productModel
+				.find({
+					where: { status: 1 },
+					order: {
+						createTime: 'DESC'
+					},
+					relations: ['source'],
+					skip: offset,
+					take: limit
+				})
+				.then(async res => {
+					const coupon = await this.couponModel.find({
+						where: { status: 1 },
+						relations: ['source'],
+						order: {
+							satisfy: 'DESC'
+						}
+					})
+					return res.map(k => {
+						const c = coupon.filter(v => v.source.some(item => item.id == k.source.id))
+						return { ...k, coupon: c }
+					})
+				})
+			return { list, total }
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

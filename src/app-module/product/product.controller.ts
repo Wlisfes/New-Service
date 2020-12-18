@@ -3,6 +3,7 @@ import { ProductService } from '@/app-module/product/product.service'
 import { ApiTags, ApiOperation, ApiHeader, ApiQuery } from '@nestjs/swagger'
 import { AuthToken, AppToken } from '@/guard/app.guard'
 import * as Face from '@/interface/entity.interface'
+import * as Dto from '@/app-module/product/product.dto'
 import * as path from '@/interface/path.interface'
 
 @ApiTags('商品模块')
@@ -27,5 +28,11 @@ export class ProductController {
 	@AuthToken(true)
 	async productStar(@Query('id') id: number, @Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.productService.productStar(id, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '猜你喜欢' })
+	@Get('love')
+	async productLove(@Query() query: Dto.ProductLove) {
+		return await this.productService.productLove(query)
 	}
 }

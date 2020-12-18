@@ -39,7 +39,7 @@ export class UserCouponEntity {
 
 	@ManyToMany(
 		type => SourceEntity,
-		source => source.coupon,
+		source => source.userCoupon,
 		{ cascade: true }
 	)
 	@JoinTable()

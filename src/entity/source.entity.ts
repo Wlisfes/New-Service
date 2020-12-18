@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 import { AdminEntity } from '@/entity/admin.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import { CouponEntity } from '@/entity/coupon.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
 
 @Entity('source')
@@ -45,5 +46,11 @@ export class SourceEntity {
 		type => UserCouponEntity,
 		coupon => coupon.source
 	)
-	coupon: UserCouponEntity[]
+	userCoupon: UserCouponEntity[]
+
+	@OneToMany(
+		type => CouponEntity,
+		coupon => coupon.source
+	)
+	coupon: CouponEntity[]
 }

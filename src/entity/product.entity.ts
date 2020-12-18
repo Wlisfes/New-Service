@@ -30,6 +30,9 @@ export class ProductEntity {
 	@Column({ default: 0, comment: '浏览量' })
 	browse: number
 
+	@Column({ default: 0, comment: '销量' })
+	sales: number
+
 	@Column({ default: 0, comment: '优惠价' })
 	price: number
 
