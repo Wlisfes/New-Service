@@ -5,7 +5,6 @@ import { SourceEntity } from '@/entity/source.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
-import { WheeEntity } from '@/entity/whee.entity'
 
 @Entity('product')
 export class ProductEntity {
@@ -88,11 +87,4 @@ export class ProductEntity {
 		{ cascade: true }
 	)
 	star: UserStarEntity[]
-
-	@OneToMany(
-		type => WheeEntity,
-		whee => whee.product,
-		{ cascade: true }
-	)
-	whee: WheeEntity[]
 }

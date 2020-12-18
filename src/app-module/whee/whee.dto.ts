@@ -3,12 +3,8 @@ import { IsNotEmpty, IsNumber } from 'class-validator'
 
 export class Whee {
 	@ApiProperty({ description: '商品sku-id', example: 1 })
-	@IsNotEmpty({ message: 'skuid 必填' })
-	skuid: number
-
-	@ApiProperty({ description: '商品sku编码', example: 'nk189763' })
-	@IsNotEmpty({ message: 'skucode 必填' })
-	skucode: string
+	@IsNotEmpty({ message: 'sku 必填' })
+	sku: number
 
 	@ApiProperty({ description: '商品数量', example: 1 })
 	@IsNotEmpty({ message: 'some 必填' })
@@ -18,6 +14,6 @@ export class Whee {
 
 export class CreateWhee extends Whee {
 	@ApiProperty({ description: '商品id', example: 2 })
-	@IsNotEmpty({ message: 'proid 必填' })
-	proid: number
+	@IsNotEmpty({ message: 'id 必填' })
+	id: number
 }

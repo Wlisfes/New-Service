@@ -19,40 +19,37 @@ export class WheeService {
 	//加入购物车
 	async createWhee(params: Dto.CreateWhee, uid: number) {
 		try {
-			const product = await this.productModel.findOne({ where: { id: params.proid } })
+			const product = await this.productModel.findOne({ where: { id: params.id } })
 			if (product) {
-				const sku = await this.skuModel.findOne({ where: { product, coding: params.skucode } })
+				const sku = await this.skuModel.findOne({ where: { id: params.sku } })
 				if (sku) {
 					const user = await this.userModel.findOne({ where: { uid } })
 					const whee = await this.wheeModel.findOne({
 						where: {
 							product,
-							skuid: params.skuid,
-							skucode: params.skucode,
+							user,
+							sku: sku,
 							status: 1
 						}
 					})
 					if (whee) {
 						//购物车里面已经有一模一样的商品
-						await this.wheeModel.update({ id: whee.id }, { some: whee.some + 1 })
-						return await this.wheeModel.findOne({
-							where: { id: whee.id },
-							relations: ['product', 'user']
-						})
+						await this.wheeModel.update({ id: whee.id }, { some: whee.some + params.some })
+						return '添加成功'
 					} else {
 						const newWhee = await this.wheeModel.create({
-							skuid: params.skuid,
-							skucode: params.skucode,
+							sku,
 							some: params.some,
 							product,
 							user
 						})
-						return this.wheeModel.save(newWhee)
+						await this.wheeModel.save(newWhee)
+						return '添加成功'
 					}
 				}
-				throw new HttpException(`skucode: ${params.skucode} 错误`, HttpStatus.BAD_REQUEST)
+				throw new HttpException(`sku: ${params.sku} 错误`, HttpStatus.BAD_REQUEST)
 			}
-			throw new HttpException(`proid: ${params.proid} 错误`, HttpStatus.BAD_REQUEST)
+			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
@@ -64,9 +61,9 @@ export class WheeService {
 			const user = await this.userModel.findOne({ where: { uid } })
 			return await this.wheeModel.find({
 				where: { user, status: 1 },
-				relations: ['product'],
+				relations: ['product', 'sku'],
 				order: {
-					id: 'DESC'
+					createTime: 'DESC'
 				}
 			})
 		} catch (error) {

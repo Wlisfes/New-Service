@@ -24,7 +24,8 @@ export class UserService {
 			const { openid } = await this.wechatService.login(params.code)
 			const user = await this.userModel.findOne({ where: { openid } })
 			if (user) {
-				return user
+				const token = await this.authService.sign({ uid: user.uid })
+				return { ...user, token }
 			} else {
 				const dataBuffer = await this.utilsService.downloadFile(params.avatar)
 				const target = `store/avatar/${this.ossService.getRename('name.jpg')}`

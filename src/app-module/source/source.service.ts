@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { SourceEntity } from '@/entity/source.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import * as Dto from '@/app-module/source/source.dto'
 
 @Injectable()
 export class SourceService {
@@ -21,5 +22,40 @@ export class SourceService {
 	}
 
 	//根据分类筛选商品
-	async sourceProduct() {}
+	async sourceProduct(params: Dto.SourceProduct) {
+		try {
+			const offset = params.offset || 0
+			const limit = params.limit || 10
+			const order: any = (() => {
+				switch (params.sort) {
+					case 1:
+						return { createTime: 'DESC' }
+					case 2:
+						return { sales: 'DESC' }
+					case 3:
+						return { price: 'ASC' }
+				}
+			})()
+			const source = await this.sourceModel.findOne({ where: { id: params.source } })
+			const total = await this.productModel
+				.createQueryBuilder('product')
+				.leftJoin('product.source', 'source')
+				.where('product.status = :status', { status: 1 })
+				.andWhere('source.id = :id', { id: source.id })
+				.orderBy(order)
+				.getCount()
+			const list = await this.productModel.find({
+				where: {
+					source,
+					status: 1
+				},
+				order,
+				skip: offset,
+				take: limit
+			})
+			return { list, total }
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
 }

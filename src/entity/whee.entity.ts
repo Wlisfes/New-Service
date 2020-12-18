@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { OrderEntity } from '@/entity/order.entity'
+import { ProductSkuEntity } from '@/entity/product.sku.entity'
 
 @Entity('user-whee')
 export class WheeEntity {
@@ -10,12 +11,6 @@ export class WheeEntity {
 
 	@Column({ comment: '商品状态', nullable: false, default: 1 })
 	status: number
-
-	@Column({ comment: '商品sku-id', nullable: false })
-	skuid: number
-
-	@Column({ comment: '商品sku编码', nullable: false })
-	skucode: string
 
 	@Column({ comment: '商品数量', nullable: false, default: 1 })
 	some: number
@@ -28,11 +23,11 @@ export class WheeEntity {
 	})
 	createTime: string
 
-	@ManyToOne(
-		type => ProductEntity,
-		product => product.sku
-	)
+	@ManyToOne(type => ProductEntity)
 	product: ProductEntity
+
+	@ManyToOne(type => ProductSkuEntity)
+	sku: ProductSkuEntity
 
 	@ManyToOne(
 		type => OrderEntity,
