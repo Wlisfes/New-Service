@@ -17,3 +17,9 @@ export class CreateWhee extends Whee {
 	@IsNotEmpty({ message: 'id 必填' })
 	id: number
 }
+
+export class DeleteWhee {
+	@ApiProperty({ description: '购物车数据id', example: 2 })
+	@IsNotEmpty({ message: 'id 必填' })
+	id: number
+}

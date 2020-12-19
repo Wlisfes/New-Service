@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Req } from '@nestjs/common'
+import { Controller, Post, Get, Delete, Query, Body, Req } from '@nestjs/common'
 import { WheeService } from '@/app-module/whee/whee.service'
 import { ApiTags, ApiOperation, ApiHeader } from '@nestjs/swagger'
 import { AuthToken } from '@/guard/app.guard'
@@ -17,6 +17,14 @@ export class WheeController {
 	@AuthToken(true)
 	async createWhee(@Body() body: Dto.CreateWhee, @Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.wheeService.createWhee(body, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '删除购物车商品' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Delete('del')
+	@AuthToken(true)
+	async deleteWhee(@Body() body: Dto.DeleteWhee, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.wheeService.deleteWhee(body.id, req.user.uid)
 	}
 
 	@ApiOperation({ summary: '获取购物车列表' })

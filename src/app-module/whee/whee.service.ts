@@ -55,6 +55,21 @@ export class WheeService {
 		}
 	}
 
+	//删除购物车
+	async deleteWhee(id: number, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			const whee = await this.wheeModel.findOne({ where: { id, user, status: 1 } })
+			if (whee) {
+				await this.wheeModel.update(whee, { status: 0 })
+				return '删除成功'
+			}
+			throw new HttpException(`id: ${id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
 	//获取购物车列表
 	async wheeList(uid: number) {
 		try {

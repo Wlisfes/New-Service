@@ -22,6 +22,7 @@ export class StarService {
 			}
 			const user = await this.userModel.findOne({ where: { uid } })
 			const star = await this.starModel.findOne({ where: { product, user } })
+			console.log(product)
 			if (star) {
 				if (star.status === 1) {
 					return '收藏成功'
