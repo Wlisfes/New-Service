@@ -11,6 +11,7 @@ import { AddressModule } from '@/app-module/address/address.module'
 import { WheeModule } from '@/app-module/whee/whee.module'
 import { OrderModule } from '@/app-module/order/order.module'
 import { CouponModule } from '@/app-module/coupon/coupon.module'
+import { StarModule } from '@/app-module/star/star.module'
 
 @Module({
 	imports: [
@@ -22,7 +23,8 @@ import { CouponModule } from '@/app-module/coupon/coupon.module'
 		AddressModule,
 		WheeModule,
 		OrderModule,
-		CouponModule
+		CouponModule,
+		StarModule
 	],
 	providers: [
 		{
@@ -49,7 +51,8 @@ export async function appSwagger(app) {
 			AddressModule,
 			WheeModule,
 			OrderModule,
-			CouponModule
+			CouponModule,
+			StarModule
 		]
 	})
 	SwaggerModule.setup('api-app', app, document)

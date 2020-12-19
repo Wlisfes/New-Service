@@ -21,15 +21,6 @@ export class ProductController {
 		return await this.productService.productInfo(id, req.user?.uid)
 	}
 
-	@ApiOperation({ summary: '商品添加收藏、取消收藏' })
-	@ApiQuery({ name: 'id', required: true, description: '商品id' })
-	@ApiHeader({ name: 'app-token', required: true })
-	@Get('star')
-	@AuthToken(true)
-	async productStar(@Query('id') id: number, @Req() req: { ipv4: string; user: Face.UserFace }) {
-		return await this.productService.productStar(id, req.user.uid)
-	}
-
 	@ApiOperation({ summary: '猜你喜欢' })
 	@Get('love')
 	async productLove(@Query() query: Dto.ProductLove) {
