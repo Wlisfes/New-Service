@@ -107,8 +107,8 @@ export class Product {
 	@ApiProperty({
 		description: '商品规则',
 		example: [
-			{ formatId: 1, attr: [1, 2] },
-			{ formatId: 2, attr: [5, 6] }
+			{ formatId: 1, attr: [1, 2, 3] },
+			{ formatId: 2, attr: [4, 5, 6] }
 		]
 	})
 	@IsNotEmpty({ message: 'format 必填' })
@@ -120,10 +120,78 @@ export class Product {
 	@ApiProperty({
 		description: '商品sku',
 		example: [
-			{ skukey: '1-5', skuname: '黑色-S', price: 19.9, costprice: 9.9, stock: 100, coding: 'nk189760' },
-			{ skukey: '1-6', skuname: '黑色-M', price: 19.9, costprice: 9.9, stock: 100, coding: 'nk189761' },
-			{ skukey: '2-5', skuname: '红色-S', price: 19.9, costprice: 9.9, stock: 100, coding: 'nk189762' },
-			{ skukey: '2-6', skuname: '红色-M', price: 19.9, costprice: 9.9, stock: 100, coding: 'nk189763' }
+			{
+				skukey: '1-4',
+				skuname: '3斤装-单果50g',
+				price: 21,
+				costprice: 15,
+				stock: 1000,
+				coding: 'nk189760'
+			},
+			{
+				skukey: '2-4',
+				skuname: '6斤装-单果50g',
+				price: 42,
+				costprice: 30,
+				stock: 1000,
+				coding: 'nk189761'
+			},
+			{
+				skukey: '3-4',
+				skuname: '10斤装-单果50g',
+				price: 70,
+				costprice: 50,
+				stock: 1000,
+				coding: 'nk189762'
+			},
+			{
+				skukey: '1-5',
+				skuname: '3斤装-单果100g',
+				price: 26,
+				costprice: 20,
+				stock: 1000,
+				coding: 'nk189763'
+			},
+			{
+				skukey: '2-5',
+				skuname: '6斤装-单果100g',
+				price: 52,
+				costprice: 40,
+				stock: 1000,
+				coding: 'nk189764'
+			},
+			{
+				skukey: '3-5',
+				skuname: '10斤装-单果100g',
+				price: 85,
+				costprice: 65,
+				stock: 1000,
+				coding: 'nk189765'
+			},
+			{
+				skukey: '1-6',
+				skuname: '3斤装-单果150g',
+				price: 31,
+				costprice: 25,
+				stock: 1000,
+				coding: 'nk189766'
+			},
+			{
+				skukey: '2-6',
+				skuname: '6斤装-单果150g',
+				price: 57,
+				costprice: 45,
+				stock: 1000,
+				coding: 'nk189767'
+			},
+			{
+				skukey: '2-7',
+				skuname: '10斤装-单果150g',
+				price: 90,
+				costprice: 70,
+				stock: 1000,
+				coding: 'nk189769'
+			}
 		]
 	})
 	@IsNotEmpty({ message: 'sku 必填' })
@@ -132,7 +200,7 @@ export class Product {
 	@Type(() => ProductSku)
 	sku: ProductSku[]
 
-	@ApiProperty({ description: '类型状态', example: 0 })
+	@ApiProperty({ description: '类型状态', example: 1 })
 	@IsOptional()
 	@IsEnum(Face.Mode, { message: 'status 类型错误' })
 	status?: Face.Mode
