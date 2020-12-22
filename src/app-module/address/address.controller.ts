@@ -19,6 +19,14 @@ export class AddressController {
 		return await this.addressService.createAddress(body, req.user.uid)
 	}
 
+	@ApiOperation({ summary: '获取默认地址' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Get('/')
+	@AuthToken(true)
+	async address(@Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.addressService.address(req.user.uid)
+	}
+
 	@ApiOperation({ summary: '获取收货地址列表' })
 	@ApiHeader({ name: 'app-token', required: true })
 	@Get('list')

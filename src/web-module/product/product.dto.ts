@@ -185,7 +185,7 @@ export class Product {
 				coding: 'nk189767'
 			},
 			{
-				skukey: '2-7',
+				skukey: '3-6',
 				skuname: '10斤装-单果150g',
 				price: 90,
 				costprice: 70,

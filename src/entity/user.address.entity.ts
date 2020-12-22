@@ -15,7 +15,7 @@ export class AddressEntity {
 	@Column({ comment: '详细地址', nullable: true })
 	address: string
 
-	@Column({ comment: '是否默认地址', nullable: true, default: 0 })
+	@Column({ comment: '是否默认地址', nullable: true, default: 2 })
 	checked: number
 
 	@Column({

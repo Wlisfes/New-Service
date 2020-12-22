@@ -20,7 +20,7 @@ export class Address {
 	@IsPhoneNumber('CN', { message: '手机号格式错误' })
 	mobile: string
 
-	@ApiProperty({ description: '类型状态', example: 0 })
+	@ApiProperty({ description: '类型状态', example: 1 })
 	@IsOptional()
 	@IsEnum(Face.Mode, { message: 'checked 类型错误' })
 	checked: Face.Mode

@@ -19,12 +19,28 @@ export class WheeController {
 		return await this.wheeService.createWhee(body, req.user.uid)
 	}
 
+	@ApiOperation({ summary: '加入购物车缓存' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Post('create/cache')
+	@AuthToken(true)
+	async createCacheWhee(@Body() body: Dto.CreateWhee, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.wheeService.createCacheWhee(body, req.user.uid)
+	}
+
 	@ApiOperation({ summary: '删除购物车商品' })
 	@ApiHeader({ name: 'app-token', required: true })
 	@Delete('del')
 	@AuthToken(true)
 	async deleteWhee(@Body() body: Dto.DeleteWhee, @Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.wheeService.deleteWhee(body.id, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '批量获取购物车' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Post('ids')
+	@AuthToken(true)
+	async wheeIds(@Body() body: Dto.WheeIds, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.wheeService.wheeIds(body, req.user.uid)
 	}
 
 	@ApiOperation({ summary: '获取购物车列表' })

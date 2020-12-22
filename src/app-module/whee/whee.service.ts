@@ -55,6 +55,31 @@ export class WheeService {
 		}
 	}
 
+	//购物车临时缓存
+	async createCacheWhee(params: Dto.CreateWhee, uid: number) {
+		try {
+			const product = await this.productModel.findOne({ where: { id: params.id } })
+			if (product) {
+				const sku = await this.skuModel.findOne({ where: { id: params.sku } })
+				if (sku) {
+					const user = await this.userModel.findOne({ where: { uid } })
+					const whee = await this.wheeModel.create({
+						sku,
+						product,
+						user,
+						some: params.some,
+						status: 2
+					})
+					return await this.wheeModel.save(whee)
+				}
+				throw new HttpException(`sku: ${params.sku} 错误`, HttpStatus.BAD_REQUEST)
+			}
+			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
 	//删除购物车
 	async deleteWhee(id: number, uid: number) {
 		try {
@@ -65,6 +90,21 @@ export class WheeService {
 				return '删除成功'
 			}
 			throw new HttpException(`id: ${id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//批量获取购物车
+	async wheeIds(params: Dto.WheeIds, uid: number) {
+		try {
+			const whee = await this.wheeModel
+				.createQueryBuilder('whee')
+				.leftJoinAndSelect('whee.product', 'product')
+				.leftJoinAndSelect('whee.sku', 'sku')
+				.where('whee.id IN (:id)', { id: params.ids })
+				.getMany()
+			return whee
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
