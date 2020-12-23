@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
+import { OrderEntity } from '@/entity/order.entity'
 
 @Entity('user-address')
 export class AddressEntity {
@@ -37,6 +38,12 @@ export class AddressEntity {
 		nullable: false
 	})
 	createTime: string
+
+	@OneToMany(
+		type => OrderEntity,
+		order => order.address
+	)
+	order: OrderEntity[]
 
 	@ManyToOne(
 		type => UserEntity,

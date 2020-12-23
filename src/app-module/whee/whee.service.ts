@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, In } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { ProductEntity } from '@/entity/product.entity'
@@ -98,13 +98,13 @@ export class WheeService {
 	//批量获取购物车
 	async wheeIds(params: Dto.WheeIds, uid: number) {
 		try {
-			const whee = await this.wheeModel
-				.createQueryBuilder('whee')
-				.leftJoinAndSelect('whee.product', 'product')
-				.leftJoinAndSelect('whee.sku', 'sku')
-				.where('whee.id IN (:id)', { id: params.ids })
-				.getMany()
-			return whee
+			return await this.wheeModel.find({
+				where: {
+					id: In(params.ids),
+					status: In([1, 2])
+				},
+				relations: ['product', 'sku']
+			})
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

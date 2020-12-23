@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Put, Body, Query, Req } from '@nestjs/common'
 import { AddressService } from '@/app-module/address/address.service'
 import { ApiTags, ApiOperation, ApiHeader } from '@nestjs/swagger'
-import { AuthToken } from '@/guard/app.guard'
+import { AuthToken, AppToken } from '@/guard/app.guard'
 import * as Dto from '@/app-module/address/address.dto'
 import * as Face from '@/interface/entity.interface'
 import * as path from '@/interface/path.interface'
@@ -23,8 +23,9 @@ export class AddressController {
 	@ApiHeader({ name: 'app-token', required: true })
 	@Get('/')
 	@AuthToken(true)
-	async address(@Req() req: { ipv4: string; user: Face.UserFace }) {
-		return await this.addressService.address(req.user.uid)
+	@AppToken(true)
+	async address(@Req() req: { ipv4: string; user?: Face.UserFace }) {
+		return await this.addressService.address(req.user?.uid)
 	}
 
 	@ApiOperation({ summary: '获取收货地址列表' })

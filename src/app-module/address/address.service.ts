@@ -34,6 +34,9 @@ export class AddressService {
 	//获取默认地址
 	async address(uid: number) {
 		try {
+			if (!uid) {
+				return null
+			}
 			const user = await this.userModel.findOne({ where: { uid } })
 			return await this.addressModel.findOne({ where: { user, checked: 2 } })
 		} catch (error) {

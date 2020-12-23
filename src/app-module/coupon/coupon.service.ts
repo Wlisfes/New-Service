@@ -53,19 +53,21 @@ export class CouponService {
 			const offset = params.offset || 0
 			const limit = params.limit || 2
 			const user = await this.userModel.findOne({ where: { uid } })
-			return await this.userCouponModel.find({
-				where: {
-					user,
-					status: 3 //params.status
-				},
+			const total = await this.userCouponModel
+				.createQueryBuilder('coupon')
+				.where('coupon.status = :status', { status: params.status })
+				.addOrderBy('coupon.endTime', 'DESC')
+				.addOrderBy('coupon.satisfy', 'ASC')
+				.getCount()
+
+			const list = await this.userCouponModel.find({
+				where: { user, status: params.status },
 				relations: ['source'],
-				order: {
-					id: 'DESC',
-					endTime: 'DESC'
-				},
+				order: { endTime: 'DESC', satisfy: 'ASC' },
 				skip: offset,
 				take: limit
 			})
+			return { total, list }
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

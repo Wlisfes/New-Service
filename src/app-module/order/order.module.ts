@@ -6,9 +6,10 @@ import { UserEntity } from '@/entity/user.entity'
 import { OrderEntity } from '@/entity/order.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { AddressEntity } from '@/entity/user.address.entity'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([UserEntity, OrderEntity, WheeEntity, UserCouponEntity])],
+	imports: [TypeOrmModule.forFeature([UserEntity, OrderEntity, WheeEntity, UserCouponEntity, AddressEntity])],
 	providers: [OrderService],
 	controllers: [OrderController]
 })
