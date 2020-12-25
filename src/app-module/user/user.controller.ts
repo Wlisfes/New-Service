@@ -1,8 +1,9 @@
-import { Controller, Post, Get, Body, Query, Req } from '@nestjs/common'
+import { Controller, Post, Get, Put, Body, Query, Req } from '@nestjs/common'
 import { UserService } from '@/app-module/user/user.service'
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger'
-import { AuthToken } from '@/guard/web.guard'
+import { ApiTags, ApiOperation, ApiQuery, ApiHeader } from '@nestjs/swagger'
+import { AuthToken } from '@/guard/app.guard'
 import * as path from '@/interface/path.interface'
+import * as Face from '@/interface/entity.interface'
 import * as Dto from '@/app-module/user/user.dto'
 
 @ApiTags('用户模块')
@@ -28,5 +29,21 @@ export class UserController {
 	@Get('one/openid')
 	async findOneOpenid(@Query('openid') openid: string) {
 		return await this.userService.findOneOpenid(openid)
+	}
+
+	@ApiOperation({ summary: '统计信息' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Get('count')
+	@AuthToken(true)
+	async userCount(@Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.userService.userCount(req.user.uid)
+	}
+
+	@ApiOperation({ summary: '设置、修改支付密码' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Put('use/pay')
+	@AuthToken(true)
+	async usePay(@Body() body: Dto.UsePay, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.userService.usePay(body.password, req.user.uid)
 	}
 }

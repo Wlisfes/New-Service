@@ -1,11 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, getConnection, In } from 'typeorm'
+import { Repository, In } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { compareSync } from 'bcryptjs'
 import * as Dto from '@/app-module/order/order.dto'
 
 @Injectable()
@@ -50,7 +51,7 @@ export class OrderService {
 				const order = await this.orderModel.create({
 					user,
 					whee,
-					coupon,
+					coupid: coupon?.id,
 					address,
 					total,
 					leave: params.leave,
@@ -64,6 +65,83 @@ export class OrderService {
 				return saveOrder
 			}
 			throw new HttpException(`ids: ${params.ids} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//支付订单
+	async payOrder(params: Dto.PayOrder, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			if (!user.password) {
+				throw new HttpException(`未设置支付密码`, HttpStatus.BAD_REQUEST)
+			} else if (!compareSync(params.password, user.password)) {
+				throw new HttpException('支付密码错误', HttpStatus.BAD_REQUEST)
+			}
+
+			const order = await this.orderModel.findOne({
+				where: {
+					id: params.order,
+					status: 1,
+					user
+				}
+			})
+			if (order) {
+				if (order.coupid) {
+					const coupon = await this.couponModel.findOne({ where: { id: order.coupid, status: 1 } })
+					if (coupon) {
+						//优惠劵有效
+						await this.orderModel.update(order, {
+							status: 2,
+							coupon
+						})
+						return '支付成功'
+					} else {
+						await this.orderModel.update(order, {
+							status: 2,
+							coupid: null,
+							discount: 0
+						})
+						return '支付成功'
+					}
+				}
+				await this.orderModel.update(order, { status: 2 })
+				return '支付成功'
+			}
+			throw new HttpException(`order: ${params.order} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//订单列表
+	async orderList(params: Dto.OrderList, uid: number) {
+		try {
+			const offset = params.offset || 0
+			const limit = params.limit || 10
+			let where = {}
+			if (params.status) {
+				where = {
+					status: params.status
+				}
+			}
+			const user = await this.userModel.findOne({ where: { uid } })
+			const total = await this.orderModel
+				.createQueryBuilder('order')
+				.leftJoin('order.user', 'u')
+				.where(where)
+				.andWhere('u.uid = :uid', { uid })
+				.getCount()
+			const list = await this.orderModel.find({
+				where: { user, ...where },
+				order: { createTime: 'DESC' },
+				relations: ['whee', 'coupon', 'address', 'whee.product', 'whee.sku'],
+				skip: offset,
+				take: limit
+			})
+
+			return { total, list }
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req } from '@nestjs/common'
+import { Controller, Post, Get, Put, Body, Query, Req } from '@nestjs/common'
 import { OrderService } from '@/app-module/order/order.service'
 import { ApiTags, ApiOperation, ApiHeader } from '@nestjs/swagger'
 import { AuthToken } from '@/guard/app.guard'
@@ -17,5 +17,21 @@ export class OrderController {
 	@AuthToken(true)
 	async createOrder(@Body() body: Dto.CreateOrder, @Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.orderService.createOrder(body, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '支付订单' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Put('pay')
+	@AuthToken(true)
+	async payOrder(@Body() body: Dto.PayOrder, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.orderService.payOrder(body, req.user.uid)
+	}
+
+	@ApiOperation({ summary: '订单列表' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Get('list')
+	@AuthToken(true)
+	async orderList(@Query() query: Dto.OrderList, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.orderService.orderList(query, req.user.uid)
 	}
 }

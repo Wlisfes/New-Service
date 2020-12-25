@@ -4,6 +4,7 @@ import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { hashSync } from 'bcryptjs'
 
 @Entity('user')
 export class UserEntity {
@@ -18,6 +19,9 @@ export class UserEntity {
 	@Column({ type: 'double', comment: 'uid', readonly: true })
 	uid: number
 
+	@Column({ type: 'double', comment: '钱包余额', default: 0 })
+	balance: number
+
 	@Column({ comment: 'openid', readonly: true })
 	openid: string
 
@@ -29,6 +33,17 @@ export class UserEntity {
 
 	@Column({ comment: '状态', nullable: false, default: 1 })
 	status: number
+
+	@Column({
+		comment: '密码',
+		nullable: true,
+		transformer: {
+			from: value => value,
+			to: value => (value ? hashSync(value) : null)
+		},
+		default: null
+	})
+	password: string
 
 	@Column({
 		comment: '手机号',

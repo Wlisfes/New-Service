@@ -51,7 +51,7 @@ export class CouponService {
 	async userCoupon(params: Dto.UserCoupon, uid: number) {
 		try {
 			const offset = params.offset || 0
-			const limit = params.limit || 2
+			const limit = params.limit || 10
 			const user = await this.userModel.findOne({ where: { uid } })
 			const total = await this.userCouponModel
 				.createQueryBuilder('coupon')

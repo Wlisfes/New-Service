@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import { Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
@@ -6,6 +7,20 @@ import { AddressEntity } from '@/entity/user.address.entity'
 
 @Entity('user-order')
 export class OrderEntity {
+	@BeforeInsert()
+	async BeforeCreate() {
+		const date = new Date()
+		const y = date.getFullYear()
+		const m = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
+		const d = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+		const t = date.getTime()
+
+		this.order = `${y}${m}${d}${t}`
+	}
+
+	@Column({ comment: '订单号', readonly: true })
+	order: string
+
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
 
@@ -20,6 +35,9 @@ export class OrderEntity {
 
 	@Column({ comment: '状态', nullable: false, default: 1 })
 	status: number
+
+	@Column({ comment: '状态', nullable: true })
+	coupid: number
 
 	@Column({
 		type: 'timestamp',

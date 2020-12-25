@@ -5,9 +5,16 @@ import { UserService } from '@/app-module/user/user.service'
 import { UserController } from '@/app-module/user/user.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from '@/entity/user.entity'
+import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { UserStarEntity } from '@/entity/user.star.entity'
+import { OrderEntity } from '@/entity/order.entity'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([UserEntity]), WechatModule, OssModule],
+	imports: [
+		TypeOrmModule.forFeature([UserEntity, UserCouponEntity, UserStarEntity, OrderEntity]),
+		WechatModule,
+		OssModule
+	],
 	providers: [UserService],
 	controllers: [UserController],
 	exports: [UserService]
