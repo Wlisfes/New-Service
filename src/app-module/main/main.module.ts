@@ -12,6 +12,7 @@ import { WheeModule } from '@/app-module/whee/whee.module'
 import { OrderModule } from '@/app-module/order/order.module'
 import { CouponModule } from '@/app-module/coupon/coupon.module'
 import { StarModule } from '@/app-module/star/star.module'
+import { WalletModule } from '@/app-module/wallet/wallet.module'
 
 @Module({
 	imports: [
@@ -24,7 +25,8 @@ import { StarModule } from '@/app-module/star/star.module'
 		WheeModule,
 		OrderModule,
 		CouponModule,
-		StarModule
+		StarModule,
+		WalletModule
 	],
 	providers: [
 		{
@@ -52,7 +54,8 @@ export async function appSwagger(app) {
 			WheeModule,
 			OrderModule,
 			CouponModule,
-			StarModule
+			StarModule,
+			WalletModule
 		]
 	})
 	SwaggerModule.setup('api-app', app, document)

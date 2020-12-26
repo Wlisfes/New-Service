@@ -90,12 +90,12 @@ export class Product {
 	@IsNotEmpty({ message: 'desc 必填' })
 	desc: string
 
-	@ApiProperty({ description: '商品优惠价', example: 19.9 })
+	@ApiProperty({ description: '商品优惠价', example: 2000 })
 	@IsNotEmpty({ message: 'price 必填' })
 	@IsNumber({}, { message: 'number 价格' })
 	price: number
 
-	@ApiProperty({ description: '商品原价', example: 29.9 })
+	@ApiProperty({ description: '商品原价', example: 2990 })
 	@IsNotEmpty({ message: 'price 必填' })
 	@IsNumber({}, { message: 'number 价格' })
 	suprice: number
@@ -107,8 +107,8 @@ export class Product {
 	@ApiProperty({
 		description: '商品规则',
 		example: [
-			{ formatId: 1, attr: [1, 2, 3] },
-			{ formatId: 2, attr: [4, 5, 6] }
+			{ formatId: 1, attr: [1, 2, 3, 4, 5] },
+			{ formatId: 2, attr: [6, 7, 8, 9] }
 		]
 	})
 	@IsNotEmpty({ message: 'format 必填' })
@@ -121,76 +121,164 @@ export class Product {
 		description: '商品sku',
 		example: [
 			{
-				skukey: '1-4',
+				skukey: '1-6',
 				skuname: '3斤装-单果50g',
-				price: 21,
-				costprice: 15,
-				stock: 1000,
+				price: 2000,
+				costprice: 1500,
+				stock: 100,
 				coding: 'nk189760'
 			},
 			{
-				skukey: '2-4',
+				skukey: '2-6',
 				skuname: '6斤装-单果50g',
-				price: 42,
-				costprice: 30,
-				stock: 1000,
+				price: 3500,
+				costprice: 3000,
+				stock: 100,
 				coding: 'nk189761'
 			},
 			{
-				skukey: '3-4',
+				skukey: '3-6',
 				skuname: '10斤装-单果50g',
-				price: 70,
-				costprice: 50,
-				stock: 1000,
+				price: 5500,
+				costprice: 5000,
+				stock: 100,
 				coding: 'nk189762'
 			},
 			{
-				skukey: '1-5',
-				skuname: '3斤装-单果100g',
-				price: 26,
-				costprice: 20,
-				stock: 1000,
+				skukey: '4-6',
+				skuname: '15斤装-单果50g',
+				price: 8000,
+				costprice: 7500,
+				stock: 100,
 				coding: 'nk189763'
 			},
 			{
-				skukey: '2-5',
-				skuname: '6斤装-单果100g',
-				price: 52,
-				costprice: 40,
+				skukey: '5-6',
+				skuname: '20斤装-单果50g',
+				price: 10500,
+				costprice: 10000,
 				stock: 1000,
 				coding: 'nk189764'
 			},
 			{
-				skukey: '3-5',
-				skuname: '10斤装-单果100g',
-				price: 85,
-				costprice: 65,
-				stock: 1000,
+				skukey: '1-7',
+				skuname: '3斤装-单果80g',
+				price: 2300,
+				costprice: 1800,
+				stock: 100,
 				coding: 'nk189765'
 			},
 			{
-				skukey: '1-6',
-				skuname: '3斤装-单果150g',
-				price: 31,
-				costprice: 25,
-				stock: 1000,
+				skukey: '2-7',
+				skuname: '6斤装-单果80g',
+				price: 4100,
+				costprice: 3600,
+				stock: 100,
 				coding: 'nk189766'
 			},
 			{
-				skukey: '2-6',
-				skuname: '6斤装-单果150g',
-				price: 57,
-				costprice: 45,
-				stock: 1000,
+				skukey: '3-7',
+				skuname: '10斤装-单果80g',
+				price: 6500,
+				costprice: 6000,
+				stock: 100,
 				coding: 'nk189767'
 			},
 			{
-				skukey: '3-6',
-				skuname: '10斤装-单果150g',
-				price: 90,
-				costprice: 70,
-				stock: 1000,
+				skukey: '4-7',
+				skuname: '15斤装-单果80g',
+				price: 9500,
+				costprice: 9000,
+				stock: 100,
+				coding: 'nk189768'
+			},
+			{
+				skukey: '5-7',
+				skuname: '20斤装-单果80g',
+				price: 12500,
+				costprice: 12000,
+				stock: 100,
 				coding: 'nk189769'
+			},
+			{
+				skukey: '1-8',
+				skuname: '3斤装-单果100g',
+				price: 2600,
+				costprice: 2100,
+				stock: 100,
+				coding: 'nk189770'
+			},
+			{
+				skukey: '2-8',
+				skuname: '6斤装-单果100g',
+				price: 4700,
+				costprice: 4200,
+				stock: 100,
+				coding: 'nk189771'
+			},
+			{
+				skukey: '3-8',
+				skuname: '10斤装-单果100g',
+				price: 7500,
+				costprice: 7000,
+				stock: 100,
+				coding: 'nk189772'
+			},
+			{
+				skukey: '4-8',
+				skuname: '15斤装-单果100g',
+				price: 11000,
+				costprice: 10500,
+				stock: 100,
+				coding: 'nk189773'
+			},
+			{
+				skukey: '5-8',
+				skuname: '20斤装-单果100g',
+				price: 14500,
+				costprice: 14000,
+				stock: 100,
+				coding: 'nk189774'
+			},
+			{
+				skukey: '1-9',
+				skuname: '3斤装-单果150g',
+				price: 2900,
+				costprice: 2400,
+				stock: 100,
+				coding: 'nk189775'
+			},
+			{
+				skukey: '2-9',
+				skuname: '6斤装-单果150g',
+				price: 5300,
+				costprice: 4800,
+				stock: 100,
+				coding: 'nk189776'
+			},
+			{
+				skukey: '3-9',
+				skuname: '10斤装-单果150g',
+				price: 8500,
+				costprice: 8000,
+				stock: 100,
+				coding: 'nk189777'
+			},
+			{
+				skukey: '4-9',
+				skuname: '15斤装-单果150g',
+				price: 12500,
+				costprice: 12000,
+				stock: 100,
+				coding: 'nk189778'
+			},
+			{
+				skukey: '5-9',
+				skuname: '20斤装-单果150g',
+				price: 16500,
+				costprice: 16000,
+				stock: 100,
+				coding: 'nk189779'
 			}
 		]
 	})

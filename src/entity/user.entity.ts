@@ -4,6 +4,7 @@ import { AddressEntity } from '@/entity/user.address.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { WalletEntity } from '@/entity/wallet.entity'
 import { hashSync } from 'bcryptjs'
 
 @Entity('user')
@@ -99,4 +100,11 @@ export class UserEntity {
 		{ cascade: true }
 	)
 	coupon: UserCouponEntity[]
+
+	@OneToMany(
+		type => WalletEntity,
+		wallet => wallet.user,
+		{ cascade: true }
+	)
+	wallet: WalletEntity[]
 }

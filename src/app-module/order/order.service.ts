@@ -7,6 +7,7 @@ import { OrderEntity } from '@/entity/order.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
 import { UtilsService } from '@/common/utils/utils.service'
+import { WalletService } from '@/app-module/wallet/wallet.service'
 import { compareSync } from 'bcryptjs'
 import * as Dto from '@/app-module/order/order.dto'
 
@@ -14,6 +15,7 @@ import * as Dto from '@/app-module/order/order.dto'
 export class OrderService {
 	constructor(
 		private readonly utilsService: UtilsService,
+		private readonly walletService: WalletService,
 		@InjectRepository(UserEntity) public readonly userModel: Repository<UserEntity>,
 		@InjectRepository(WheeEntity) public readonly wheeModel: Repository<WheeEntity>,
 		@InjectRepository(OrderEntity) public readonly orderModel: Repository<OrderEntity>,
@@ -76,13 +78,8 @@ export class OrderService {
 	//支付订单
 	async payOrder(params: Dto.PayOrder, uid: number) {
 		try {
+			await this.walletService.authPassword(params.password, uid)
 			const user = await this.userModel.findOne({ where: { uid } })
-			if (!user.password) {
-				throw new HttpException(`未设置支付密码`, HttpStatus.BAD_REQUEST)
-			} else if (!compareSync(params.password, user.password)) {
-				throw new HttpException('支付密码错误', HttpStatus.BAD_REQUEST)
-			}
-
 			const order = await this.orderModel.findOne({
 				where: {
 					id: params.order,
@@ -95,12 +92,30 @@ export class OrderService {
 					const coupon = await this.couponModel.findOne({ where: { id: order.coupid, status: 1 } })
 					if (coupon) {
 						//优惠劵有效
+						await this.walletService.authBalance(order.total - order.discount, uid)
+						await this.walletService.authDeduct(
+							{
+								consume: order.total - order.discount,
+								order: order.id,
+								context: '支付订单消费'
+							},
+							uid
+						)
 						await this.orderModel.update(order, {
 							status: 2,
 							coupon
 						})
 						return '支付成功'
 					} else {
+						await this.walletService.authBalance(order.total - order.discount, uid)
+						await this.walletService.authDeduct(
+							{
+								consume: order.total - order.discount,
+								order: order.id,
+								context: '支付订单消费'
+							},
+							uid
+						)
 						await this.orderModel.update(order, {
 							status: 2,
 							coupid: null,
@@ -108,9 +123,19 @@ export class OrderService {
 						})
 						return '支付成功'
 					}
+				} else {
+					await this.walletService.authBalance(order.total, uid)
+					await this.walletService.authDeduct(
+						{
+							consume: order.total - order.discount,
+							order: order.id,
+							context: '支付订单消费'
+						},
+						uid
+					)
+					await this.orderModel.update(order, { status: 2 })
+					return '支付成功'
 				}
-				await this.orderModel.update(order, { status: 2 })
-				return '支付成功'
 			}
 			throw new HttpException(`order: ${params.order} 错误`, HttpStatus.BAD_REQUEST)
 		} catch (error) {

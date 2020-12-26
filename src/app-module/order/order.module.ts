@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { OrderService } from '@/app-module/order/order.service'
 import { OrderController } from '@/app-module/order/order.controller'
+import { WalletModule } from '@/app-module/wallet/wallet.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { OrderEntity } from '@/entity/order.entity'
@@ -9,7 +10,10 @@ import { UserCouponEntity } from '@/entity/user.coupon.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([UserEntity, OrderEntity, WheeEntity, UserCouponEntity, AddressEntity])],
+	imports: [
+		TypeOrmModule.forFeature([UserEntity, OrderEntity, WheeEntity, UserCouponEntity, AddressEntity]),
+		WalletModule
+	],
 	providers: [OrderService],
 	controllers: [OrderController]
 })
