@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
+import { OrderEntity } from '@/entity/order.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
 import * as Dto from '@/app-module/whee/whee.dto'
@@ -12,6 +13,7 @@ export class WheeService {
 	constructor(
 		@InjectRepository(UserEntity) public readonly userModel: Repository<UserEntity>,
 		@InjectRepository(WheeEntity) public readonly wheeModel: Repository<WheeEntity>,
+		@InjectRepository(OrderEntity) public readonly orderModel: Repository<OrderEntity>,
 		@InjectRepository(ProductEntity) public readonly productModel: Repository<ProductEntity>,
 		@InjectRepository(ProductSkuEntity) public readonly skuModel: Repository<ProductSkuEntity>
 	) {}
@@ -50,6 +52,35 @@ export class WheeService {
 				throw new HttpException(`sku: ${params.sku} 错误`, HttpStatus.BAD_REQUEST)
 			}
 			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//添加订单商品到购物车
+	async createOrderWhee(params: Dto.CreateOrderWhee, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			const order = await this.orderModel.findOne({
+				where: { id: params.order, user },
+				relations: ['whee', 'whee.product', 'whee.sku']
+			})
+			if (order) {
+				for (const o of order.whee) {
+					if (o.product.status === 1) {
+						await this.createWhee(
+							{
+								sku: o.sku.id,
+								some: o.some,
+								id: o.product.id
+							},
+							uid
+						)
+					}
+				}
+				return '添加成功'
+			}
+			throw new HttpException(`order: ${params.order} 错误`, HttpStatus.BAD_REQUEST)
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}

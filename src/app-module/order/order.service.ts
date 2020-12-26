@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In } from 'typeorm'
+import { Repository, In, Not } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
@@ -123,19 +123,19 @@ export class OrderService {
 		try {
 			const offset = params.offset || 0
 			const limit = params.limit || 10
-			let where = {}
+			const where = {}
 			if (params.status) {
-				where = {
-					status: params.status
-				}
+				where['status'] = In([params.status])
+			} else {
+				where['status'] = Not(params.status)
 			}
 			const user = await this.userModel.findOne({ where: { uid } })
-			const total = await this.orderModel
-				.createQueryBuilder('order')
-				.leftJoin('order.user', 'u')
-				.where(where)
-				.andWhere('u.uid = :uid', { uid })
-				.getCount()
+			const total = (
+				await this.orderModel.find({
+					where: { user, ...where }
+				})
+			).length
+
 			const list = await this.orderModel.find({
 				where: { user, ...where },
 				order: { createTime: 'DESC' },

@@ -19,6 +19,14 @@ export class WheeController {
 		return await this.wheeService.createWhee(body, req.user.uid)
 	}
 
+	@ApiOperation({ summary: '添加订单商品到购物车' })
+	@ApiHeader({ name: 'app-token', required: true })
+	@Post('create/order')
+	@AuthToken(true)
+	async createOrderWhee(@Body() body: Dto.CreateOrderWhee, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.wheeService.createOrderWhee(body, req.user.uid)
+	}
+
 	@ApiOperation({ summary: '加入购物车缓存' })
 	@ApiHeader({ name: 'app-token', required: true })
 	@Post('create/cache')

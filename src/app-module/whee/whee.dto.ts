@@ -21,15 +21,21 @@ export class CreateWhee extends Whee {
 }
 
 export class DeleteWhee {
-	@ApiProperty({ description: '购物车数据id', example: 2 })
+	@ApiProperty({ description: '购物车id', example: 2 })
 	@IsNotEmpty({ message: 'id 必填' })
 	id: number
 }
 
 export class WheeIds {
-	@ApiProperty({ description: '购物车数据id', example: [1, 2, 3] })
+	@ApiProperty({ description: '购物车id', example: [1, 2, 3] })
 	@IsNotEmpty({ message: 'ids 必填' })
 	@Type(() => Number)
 	@IsNumber({}, { each: true, message: 'ids is Array-number' })
 	ids: number[]
+}
+
+export class CreateOrderWhee {
+	@ApiProperty({ description: '订单id', example: 2 })
+	@IsNotEmpty({ message: 'order 必填' })
+	order: number
 }

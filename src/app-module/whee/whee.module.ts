@@ -4,11 +4,12 @@ import { WheeController } from '@/app-module/whee/whee.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
+import { OrderEntity } from '@/entity/order.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([UserEntity, WheeEntity, ProductEntity, ProductSkuEntity])],
+	imports: [TypeOrmModule.forFeature([UserEntity, WheeEntity, OrderEntity, ProductEntity, ProductSkuEntity])],
 	providers: [WheeService],
 	controllers: [WheeController]
 })

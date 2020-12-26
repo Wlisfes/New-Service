@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty } from 'class-validator'
+import { Type } from 'class-transformer'
 
 export class CreateUser {
 	@ApiProperty({ description: '头像', example: '123456' })
@@ -18,5 +19,6 @@ export class CreateUser {
 export class UsePay {
 	@ApiProperty({ description: '支付密码', example: 123456 })
 	@IsNotEmpty({ message: 'password 必填' })
+	@Type(() => String)
 	password: string
 }
