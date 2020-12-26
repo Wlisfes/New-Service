@@ -8,20 +8,30 @@ import { AddressEntity } from '@/entity/user.address.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
 import { UtilsService } from '@/common/utils/utils.service'
 import { WalletService } from '@/app-module/wallet/wallet.service'
-import { compareSync } from 'bcryptjs'
+import { RedisService } from '@/common/redis/redis.service'
 import * as Dto from '@/app-module/order/order.dto'
 
 @Injectable()
 export class OrderService {
+	private seconds: number = 7200 //自动发货时间两小时
+
 	constructor(
 		private readonly utilsService: UtilsService,
 		private readonly walletService: WalletService,
+		private readonly redisService: RedisService,
 		@InjectRepository(UserEntity) public readonly userModel: Repository<UserEntity>,
 		@InjectRepository(WheeEntity) public readonly wheeModel: Repository<WheeEntity>,
 		@InjectRepository(OrderEntity) public readonly orderModel: Repository<OrderEntity>,
 		@InjectRepository(AddressEntity) public readonly addressModel: Repository<AddressEntity>,
 		@InjectRepository(UserCouponEntity) public readonly couponModel: Repository<UserCouponEntity>
-	) {}
+	) {
+		this.redisService.observer(async key => {
+			const [order, id] = key.split('_')
+			if ('order' === order) {
+				await this.automAticShip(id)
+			}
+		})
+	}
 
 	//创建订单
 	async createOrder(params: Dto.CreateOrder, uid: number) {
@@ -105,6 +115,9 @@ export class OrderService {
 							status: 2,
 							coupon
 						})
+
+						//redis支付2小时后自动发货
+						await this.redisService.setStore(`order_${order.id}`, order.id, this.seconds)
 						return '支付成功'
 					} else {
 						await this.walletService.authBalance(order.total - order.discount, uid)
@@ -121,6 +134,9 @@ export class OrderService {
 							coupid: null,
 							discount: 0
 						})
+
+						//redis支付2小时后自动发货
+						await this.redisService.setStore(`order_${order.id}`, order.id, this.seconds)
 						return '支付成功'
 					}
 				} else {
@@ -134,6 +150,9 @@ export class OrderService {
 						uid
 					)
 					await this.orderModel.update(order, { status: 2 })
+
+					//redis支付2小时后自动发货
+					await this.redisService.setStore(`order_${order.id}`, order.id, this.seconds)
 					return '支付成功'
 				}
 			}
@@ -200,6 +219,20 @@ export class OrderService {
 				return '收货成功'
 			}
 			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//自动发货
+	async automAticShip(id: number) {
+		try {
+			const order = await this.orderModel.findOne({ where: { id } })
+			if (order.status === 2) {
+				await this.orderModel.update({ id }, { status: 3 })
+				return '发货成功'
+			}
+			return '已发货'
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
