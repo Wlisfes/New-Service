@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { WheeEntity } from '@/entity/whee.entity'
@@ -7,22 +7,11 @@ import { AddressEntity } from '@/entity/user.address.entity'
 
 @Entity('user-order')
 export class OrderEntity {
-	@BeforeInsert()
-	async BeforeCreate() {
-		const date = new Date()
-		const y = date.getFullYear()
-		const m = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
-		const d = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
-		const t = date.getTime()
-
-		this.order = `${y}${m}${d}${t}`
-	}
-
-	@Column({ comment: '订单号', readonly: true })
-	order: string
-
 	@PrimaryGeneratedColumn({ comment: '自增长主键' })
 	id: number
+
+	@Column({ comment: '订单号', nullable: false })
+	order: string
 
 	@Column({ comment: '合计金额', nullable: false, default: 0 })
 	total: number

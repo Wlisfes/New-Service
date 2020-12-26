@@ -60,3 +60,10 @@ export class OrderList {
 	@IsEnum(Face.Mode, { message: 'status 类型错误' })
 	status?: Face.Mode
 }
+
+export class DecOrder {
+	@ApiProperty({ description: '订单id', example: 1 })
+	@IsNotEmpty({ message: 'id 必填' })
+	@Type(() => Number)
+	id: number
+}

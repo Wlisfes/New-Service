@@ -38,4 +38,14 @@ export class UtilsService {
 		}
 		return 0
 	}
+
+	//创建订单号
+	public createOrder(): string {
+		const date = new Date()
+		const y = date.getFullYear()
+		const m = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
+		const d = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+		const t = date.getTime()
+		return `${y}${m}${d}${t}`
+	}
 }

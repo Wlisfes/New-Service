@@ -6,12 +6,14 @@ import { WheeEntity } from '@/entity/whee.entity'
 import { OrderEntity } from '@/entity/order.entity'
 import { AddressEntity } from '@/entity/user.address.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { UtilsService } from '@/common/utils/utils.service'
 import { compareSync } from 'bcryptjs'
 import * as Dto from '@/app-module/order/order.dto'
 
 @Injectable()
 export class OrderService {
 	constructor(
+		private readonly utilsService: UtilsService,
 		@InjectRepository(UserEntity) public readonly userModel: Repository<UserEntity>,
 		@InjectRepository(WheeEntity) public readonly wheeModel: Repository<WheeEntity>,
 		@InjectRepository(OrderEntity) public readonly orderModel: Repository<OrderEntity>,
@@ -51,11 +53,12 @@ export class OrderService {
 				const order = await this.orderModel.create({
 					user,
 					whee,
-					coupid: coupon?.id,
 					address,
 					total,
 					leave: params.leave,
-					discount: coupon?.discount || 0
+					coupid: coupon?.id,
+					discount: coupon?.discount || 0,
+					order: this.utilsService.createOrder()
 				})
 				const saveOrder = await this.orderModel.save(order)
 
@@ -142,6 +145,36 @@ export class OrderService {
 			})
 
 			return { total, list }
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//删除订单
+	async deleteOrder(params: Dto.DecOrder, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			const order = await this.orderModel.findOne({ where: { id: params.id, user } })
+			if (order) {
+				await this.orderModel.update(order, { status: 0 })
+				return '删除成功'
+			}
+			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
+	//确认收货
+	async incomeOrder(params: Dto.DecOrder, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			const order = await this.orderModel.findOne({ where: { id: params.id, user } })
+			if (order) {
+				await this.orderModel.update(order, { status: 4 })
+				return '收货成功'
+			}
+			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
