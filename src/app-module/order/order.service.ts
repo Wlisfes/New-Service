@@ -213,8 +213,9 @@ export class OrderService {
 	}
 
 	//确认收货
-	async incomeOrder(params: Dto.DecOrder, uid: number) {
+	async incomeOrder(params: Dto.IncomeOrder, uid: number) {
 		try {
+			await this.walletService.authPassword(params.password, uid)
 			const user = await this.userModel.findOne({ where: { uid } })
 			const order = await this.orderModel.findOne({ where: { id: params.id, user } })
 			if (order) {

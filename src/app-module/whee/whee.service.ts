@@ -134,7 +134,7 @@ export class WheeService {
 					id: In(params.ids),
 					status: In([1, 2])
 				},
-				relations: ['product', 'sku']
+				relations: ['product', 'sku', 'product.source']
 			})
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)

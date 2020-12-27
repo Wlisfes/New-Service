@@ -47,7 +47,7 @@ export class OrderController {
 	@ApiHeader({ name: 'app-token', required: true })
 	@Put('income')
 	@AuthToken(true)
-	async incomeOrder(@Body() body: Dto.DecOrder, @Req() req: { ipv4: string; user: Face.UserFace }) {
+	async incomeOrder(@Body() body: Dto.IncomeOrder, @Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.orderService.incomeOrder(body, req.user.uid)
 	}
 }

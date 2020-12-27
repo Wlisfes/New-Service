@@ -67,3 +67,9 @@ export class DecOrder {
 	@Type(() => Number)
 	id: number
 }
+
+export class IncomeOrder extends DecOrder {
+	@ApiProperty({ description: '支付密码', example: 123456 })
+	@IsNotEmpty({ message: 'password 必填' })
+	password: string
+}
