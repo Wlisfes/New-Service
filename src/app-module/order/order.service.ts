@@ -111,6 +111,9 @@ export class OrderService {
 							},
 							uid
 						)
+
+						//设置优惠劵为已使用
+						await this.couponModel.update({ id: order.coupid }, { status: 2 })
 						await this.orderModel.update(order, {
 							status: 2,
 							coupon
