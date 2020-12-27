@@ -48,29 +48,15 @@ export class ProductService {
 				.orderBy('product.createTime', 'DESC')
 				.getCount()
 
-			const list = await this.productModel
-				.find({
-					where: { status: 1 },
-					order: {
-						createTime: 'DESC'
-					},
-					relations: ['source'],
-					skip: offset,
-					take: limit
-				})
-				.then(async res => {
-					const coupon = await this.couponModel.find({
-						where: { status: 1 },
-						relations: ['source'],
-						order: {
-							satisfy: 'DESC'
-						}
-					})
-					return res.map(k => {
-						const c = coupon.filter(v => v.source.some(item => item.id == k.source.id))
-						return { ...k, coupon: c }
-					})
-				})
+			const list = await this.productModel.find({
+				where: { status: 1 },
+				order: {
+					createTime: 'DESC'
+				},
+				relations: ['source', 'source.coupon'],
+				skip: offset,
+				take: limit
+			})
 			return { list, total }
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)

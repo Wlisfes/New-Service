@@ -30,10 +30,7 @@ export class CouponService {
 	//创建优惠劵
 	async createCoupon(params: Dto.CreateCoupon, uid: number) {
 		try {
-			const source = await this.sourceModel
-				.createQueryBuilder('source')
-				.where('source.id IN (:id)', { id: params.source })
-				.getMany()
+			const source = await this.sourceModel.findOne({ where: { id: params.source } })
 			const admin = await this.adminModel.findOne({ where: { uid } })
 			const coupon = await this.couponModel.create({
 				satisfy: params.satisfy,

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { SourceEntity } from '@/entity/source.entity'
 import { AdminEntity } from '@/entity/admin.entity'
 
@@ -33,13 +33,11 @@ export class CouponEntity {
 	})
 	createTime: string
 
-	@ManyToMany(
+	@ManyToOne(
 		type => SourceEntity,
-		source => source.coupon,
-		{ cascade: true }
+		source => source.coupon
 	)
-	@JoinTable()
-	source: SourceEntity[]
+	source: SourceEntity
 
 	@ManyToOne(
 		type => AdminEntity,

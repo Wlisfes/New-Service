@@ -37,18 +37,21 @@ export class SourceService {
 				}
 			})()
 			const source = await this.sourceModel.findOne({ where: { id: params.source } })
-			const total = await this.productModel
-				.createQueryBuilder('product')
-				.leftJoin('product.source', 'source')
-				.where('product.status = :status', { status: 1 })
-				.andWhere('source.id = :id', { id: source.id })
-				.orderBy(order)
-				.getCount()
+			const total = (
+				await this.productModel.find({
+					where: {
+						source,
+						status: 1
+					},
+					order
+				})
+			).length
 			const list = await this.productModel.find({
 				where: {
 					source,
 					status: 1
 				},
+				relations: ['source', 'source.coupon'],
 				order,
 				skip: offset,
 				take: limit

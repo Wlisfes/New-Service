@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, OneToOne, JoinTable } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { SourceEntity } from '@/entity/source.entity'
 import { OrderEntity } from '@/entity/order.entity'
@@ -37,13 +37,11 @@ export class UserCouponEntity {
 	})
 	createTime: string
 
-	@ManyToMany(
+	@ManyToOne(
 		type => SourceEntity,
-		source => source.userCoupon,
-		{ cascade: true }
+		source => source.userCoupon
 	)
-	@JoinTable()
-	source: SourceEntity[]
+	source: SourceEntity
 
 	@ManyToOne(
 		type => UserEntity,

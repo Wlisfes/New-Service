@@ -36,4 +36,14 @@ export class CouponController {
 	async couponList(@Req() req: { ipv4: string; user: Face.UserFace }) {
 		return await this.couponService.couponList(req.user?.uid)
 	}
+
+	@ApiOperation({ summary: '获取某个分类下有效优惠劵' })
+	@ApiHeader({ name: 'app-token' })
+	@ApiQuery({ name: 'source', required: true, description: '分类id' })
+	@Get('source')
+	@AuthToken(true)
+	@AppToken(true)
+	async sourceCoupon(@Query('source') source: number, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		// return await this.couponService.sourceCoupon(source, req.user?.uid)
+	}
 }

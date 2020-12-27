@@ -14,10 +14,9 @@ export class Coupon {
 	@IsNumber({}, { message: 'discount is number' })
 	discount: number
 
-	@ApiProperty({ description: '分类id', example: [1, 2, 3] })
+	@ApiProperty({ description: '分类id', example: 1 })
 	@IsNotEmpty({ message: 'source 必填' })
-	@IsNumber({}, { each: true, message: 'source is array-number' })
-	source: number[]
+	source: number
 
 	@ApiProperty({ description: '优惠劵说明', example: '仅限于水果使用' })
 	@IsNotEmpty({ message: 'desc 必填' })
