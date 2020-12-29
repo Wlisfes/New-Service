@@ -24,15 +24,15 @@ export class StarController {
 	@ApiHeader({ name: 'app-token', required: true })
 	@Delete('del')
 	@AuthToken(true)
-	async deleteStar(@Query('id') id: number, @Req() req: { ipv4: string; user: Face.UserFace }) {
-		return await this.starService.deleteStar(id, req.user.uid)
+	async delStar(@Body() body: Dto.CreateStar, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.starService.delStar(body.id, req.user.uid)
 	}
 
 	@ApiOperation({ summary: '我的收藏列表' })
 	@ApiHeader({ name: 'app-token', required: true })
 	@Get('list')
 	@AuthToken(true)
-	async userStar(@Req() req: { ipv4: string; user: Face.UserFace }) {
-		return await this.starService.userStar(req.user.uid)
+	async userStar(@Query() query: Dto.UserStar, @Req() req: { ipv4: string; user: Face.UserFace }) {
+		return await this.starService.userStar(query, req.user.uid)
 	}
 }

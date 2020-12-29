@@ -4,6 +4,7 @@ import { Repository } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import * as Dto from '@/app-module/star/star.dto'
 
 @Injectable()
 export class StarService {
@@ -22,7 +23,6 @@ export class StarService {
 			}
 			const user = await this.userModel.findOne({ where: { uid } })
 			const star = await this.starModel.findOne({ where: { product, user } })
-			console.log(product)
 			if (star) {
 				if (star.status === 1) {
 					return '收藏成功'
@@ -41,7 +41,7 @@ export class StarService {
 	}
 
 	//取消收藏
-	async deleteStar(id: number, uid: number) {
+	async delStar(id: number, uid: number) {
 		try {
 			const product = await this.productModel.findOne({ where: { id } })
 			if (!product) {
@@ -63,13 +63,19 @@ export class StarService {
 	}
 
 	//我的收藏列表
-	async userStar(uid: number) {
+	async userStar(params: Dto.UserStar, uid: number) {
 		try {
+			const offset = params.offset || 0
+			const limit = params.limit || 10
 			const user = await this.userModel.findOne({ where: { uid } })
-			return await this.starModel.find({
+			const total = (await this.starModel.find({ where: { status: 1, user } })).length
+			const list = await this.starModel.find({
 				where: { user, status: 1 },
-				relations: ['product']
+				relations: ['product'],
+				skip: offset,
+				take: limit
 			})
+			return { total, list }
 		} catch (error) {
 			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
 		}
