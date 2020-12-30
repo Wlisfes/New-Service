@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, UpdateDateColumn } from 'typeorm'
 import { UserEntity } from '@/entity/user.entity'
 import { ProductEntity } from '@/entity/product.entity'
+import * as day from 'dayjs'
 
 @Entity('user-star')
 export class UserStarEntity {
@@ -17,6 +18,12 @@ export class UserStarEntity {
 		nullable: false
 	})
 	createTime: string
+
+	@UpdateDateColumn({
+		type: 'timestamp',
+		comment: '更新时间'
+	})
+	updateTime: Date
 
 	@ManyToOne(
 		type => UserEntity,
