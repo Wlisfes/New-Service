@@ -27,6 +27,8 @@ import { WheeEntity } from '@/entity/whee.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
 import { CouponEntity } from '@/entity/coupon.entity'
 import { OrderEntity } from '@/entity/order.entity'
+import { WalletEntity } from '@/entity/wallet.entity'
+import { RockEntity } from '@/entity/rock.entity'
 
 @Module({
 	imports: [
@@ -47,7 +49,9 @@ import { OrderEntity } from '@/entity/order.entity'
 			WheeEntity,
 			UserCouponEntity,
 			CouponEntity,
-			OrderEntity
+			OrderEntity,
+			WalletEntity,
+			RockEntity
 		]),
 		HttpModule,
 		AppMainModule,

@@ -11,6 +11,7 @@ import { FormatModule } from '@/web-module/format/format.module'
 import { ProductModule } from '@/web-module/product/product.module'
 import { HotwellModule } from '@/web-module/hotwell/hotwell.module'
 import { CouponModule } from '@/web-module/coupon/coupon.module'
+import { RockModule } from '@/web-module/rock/rock.module'
 
 @Module({
 	imports: [
@@ -21,7 +22,8 @@ import { CouponModule } from '@/web-module/coupon/coupon.module'
 		FormatModule,
 		ProductModule,
 		HotwellModule,
-		CouponModule
+		CouponModule,
+		RockModule
 	],
 	providers: [
 		{
@@ -48,7 +50,8 @@ export async function webSwagger(app) {
 			FormatModule,
 			ProductModule,
 			HotwellModule,
-			CouponModule
+			CouponModule,
+			RockModule
 		]
 	})
 	SwaggerModule.setup('api-web', app, document)

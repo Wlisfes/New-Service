@@ -3,6 +3,7 @@ import { AdminEntity } from '@/entity/admin.entity'
 import { ProductEntity } from '@/entity/product.entity'
 import { CouponEntity } from '@/entity/coupon.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
+import { RockEntity } from '@/entity/rock.entity'
 
 @Entity('source')
 export class SourceEntity {
@@ -37,8 +38,7 @@ export class SourceEntity {
 
 	@OneToMany(
 		type => ProductEntity,
-		product => product.source,
-		{ cascade: true }
+		product => product.source
 	)
 	product: ProductEntity[]
 
@@ -53,4 +53,10 @@ export class SourceEntity {
 		coupon => coupon.source
 	)
 	coupon: CouponEntity[]
+
+	@OneToMany(
+		type => RockEntity,
+		rock => rock.source
+	)
+	rock: RockEntity[]
 }
