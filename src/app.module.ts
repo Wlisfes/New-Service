@@ -27,10 +27,21 @@ import { WheeEntity } from '@/entity/whee.entity'
 import { UserCouponEntity } from '@/entity/user.coupon.entity'
 import { CouponEntity } from '@/entity/coupon.entity'
 import { OrderEntity } from '@/entity/order.entity'
+import { WalletEntity } from '@/entity/wallet.entity'
+import { RockEntity } from '@/entity/rock.entity'
 
 @Module({
 	imports: [
 		CommonMainModule,
+		TypeOrmModule.forRoot({
+			extra: {
+				poolMax: 32,
+				poolMin: 16,
+				queueTimeout: 60000,
+				pollPingInterval: 60, // 每隔60秒连接
+				pollTimeout: 60 // 连接有效60秒
+			}
+		}),
 		TypeOrmModule.forFeature([
 			AdminEntity,
 			UserEntity,
@@ -47,7 +58,9 @@ import { OrderEntity } from '@/entity/order.entity'
 			WheeEntity,
 			UserCouponEntity,
 			CouponEntity,
-			OrderEntity
+			OrderEntity,
+			WalletEntity,
+			RockEntity
 		]),
 		HttpModule,
 		AppMainModule,

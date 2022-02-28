@@ -1,6 +1,5 @@
 import { Module, Global } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
 import { SessionModule } from 'nestjs-session'
 import { OssModule } from '@/common/oss/oss.module'
 import { RedisModule } from '@/common/redis/redis.module'
@@ -12,13 +11,13 @@ import { AuthModule } from '@/common/auth/auth.module'
 @Module({
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true }),
-		TypeOrmModule.forRoot(),
 		RedisModule.forRoot({
 			host: process.env.REDIS_HOST,
-			port: parseInt(process.env.REDIS_PORT),
-			db: parseInt(process.env.REDIS_DB),
+			port: Number(process.env.REDIS_PORT),
+			db: Number(process.env.REDIS_DB),
 			password: process.env.REDIS_PASSWORD,
-			keyPrefix: process.env.REDIS_KEYPREFIX
+			keyPrefix: process.env.REDIS_KEYPREFIX,
+			lazyConnect: true
 		}),
 		SessionModule.forRoot({
 			session: {

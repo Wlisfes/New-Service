@@ -72,6 +72,7 @@ export class StarService {
 			const list = await this.starModel.find({
 				where: { user, status: 1 },
 				relations: ['product'],
+				order: { updateTime: 'DESC' },
 				skip: offset,
 				take: limit
 			})

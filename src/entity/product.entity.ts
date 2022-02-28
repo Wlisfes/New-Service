@@ -5,6 +5,7 @@ import { SourceEntity } from '@/entity/source.entity'
 import { ProductFormatEntity } from '@/entity/product.format.entity'
 import { ProductSkuEntity } from '@/entity/product.sku.entity'
 import { UserStarEntity } from '@/entity/user.star.entity'
+import { RockEntity } from '@/entity/rock.entity'
 
 @Entity('product')
 export class ProductEntity {
@@ -87,4 +88,10 @@ export class ProductEntity {
 		{ cascade: true }
 	)
 	star: UserStarEntity[]
+
+	@ManyToOne(
+		type => RockEntity,
+		rock => rock.product
+	)
+	rock: RockEntity
 }
