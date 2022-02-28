@@ -42,7 +42,8 @@ export class UserService {
 					const newUser = await this.userModel.create({
 						avatar,
 						openid,
-						nickname: params.nickname
+						nickname: params.nickname,
+						balance: 10000
 					})
 					const saveUser = await this.userModel.save(newUser)
 					const token = await this.authService.sign({ uid: saveUser.uid })

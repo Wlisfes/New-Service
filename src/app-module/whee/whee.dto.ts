@@ -20,6 +20,18 @@ export class CreateWhee extends Whee {
 	id: number
 }
 
+export class UpdateWheeSome {
+	@ApiProperty({ description: '购物车id', example: 2 })
+	@IsNotEmpty({ message: 'id 必填' })
+	id: number
+
+	@ApiProperty({ description: '商品数量', example: 1 })
+	@IsNotEmpty({ message: 'some 必填' })
+	@Type(() => Number)
+	@IsNumber({}, { message: 'some number' })
+	some: number
+}
+
 export class DeleteWhee {
 	@ApiProperty({ description: '购物车id', example: 2 })
 	@IsNotEmpty({ message: 'id 必填' })

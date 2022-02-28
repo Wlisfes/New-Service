@@ -57,6 +57,21 @@ export class WheeService {
 		}
 	}
 
+	//修改商品数量
+	async updateWheeSome(params: Dto.UpdateWheeSome, uid: number) {
+		try {
+			const user = await this.userModel.findOne({ where: { uid } })
+			const whee = await this.wheeModel.findOne({ where: { id: params.id, status: 1,user }})
+			if (whee) {
+				await this.wheeModel.update({ id: params.id }, { some: params.some })
+				return '修改成功'
+			}
+			throw new HttpException(`id: ${params.id} 错误`, HttpStatus.BAD_REQUEST)
+		} catch (error) {
+			throw new HttpException(error.message || error.toString(), HttpStatus.BAD_REQUEST)
+		}
+	}
+
 	//添加订单商品到购物车
 	async createOrderWhee(params: Dto.CreateOrderWhee, uid: number) {
 		try {
