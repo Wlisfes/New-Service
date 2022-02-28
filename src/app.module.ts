@@ -33,6 +33,15 @@ import { RockEntity } from '@/entity/rock.entity'
 @Module({
 	imports: [
 		CommonMainModule,
+		TypeOrmModule.forRoot({
+			extra: {
+				poolMax: 32,
+				poolMin: 16,
+				queueTimeout: 60000,
+				pollPingInterval: 60, // 每隔60秒连接
+				pollTimeout: 60 // 连接有效60秒
+			}
+		}),
 		TypeOrmModule.forFeature([
 			AdminEntity,
 			UserEntity,
